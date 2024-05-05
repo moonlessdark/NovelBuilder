@@ -11,8 +11,8 @@ from Businese.FormatMode.LineWrapFormat import LineWrap
 class LineWrapV3:
 
     def __init__(self):
-        self.__warp_tag_left: list = ['。', '！', '!' '”', "…", "？", '?', '；', ';']  # 左侧碰到这些字符，就可以正常换行了
-        self.__warp_tag_special: list = ['"']  # 左侧碰到这个字符，需要特殊判断。1:换行符中出现到这个字符之间，出现了偶数，表示可以换行。如果是个奇数，那么就不换行
+        self.__warp_tag_left: list = ['。', '！', '!', "…", "？", '?', '；', ';']  # 左侧碰到这些字符，就可以正常换行了
+        self.__warp_tag_special: list = ['"', '”']  # 左侧碰到这个字符，需要特殊判断。1:换行符中出现到这个字符之间，出现了偶数，表示可以换行。如果是个奇数，那么就不换行
 
     def check_str_is_line(self, content: str) -> list:
         """
