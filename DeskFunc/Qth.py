@@ -2,7 +2,7 @@ from PySide6.QtCore import QThread, QWaitCondition, QMutex, Signal
 
 from Businese.FormatMode.ClearAdString import ClearAd
 from Businese.FormatMode.LineWrapFormat import LineWrap
-from Businese.FormatMode.lineWrapFormatV2 import LineWrapV2
+from Businese.FormatMode.lineWrapFormatV3 import LineWrapV3
 from Utils.dataClass import ToolBarEnum
 from Utils.fileOpt import FileOpt
 from Utils.tradition import tradition2simple
@@ -66,7 +66,7 @@ class ManualFormat(QThread):
     def __init__(self):
         super().__init__()
 
-        self.line_wrap = LineWrapV2()
+        self.line_wrap = LineWrapV3()
 
         self.working = True
         self.is_First_time = True
@@ -118,7 +118,7 @@ class ManualFormat(QThread):
                 处理非段落换行。用于处理盗版小说爬去的异常换行
                 如果要写加强版的话，那就是在此基础上，再判断双引号中的内容是否需要换行
                 """
-                content_list: list = self.line_wrap.check_str_is_line_v2(self.content)
+                content_list: list = self.line_wrap.check_str_is_line(self.content)
                 content: str = LineWrap().format_merge_list(content_list)
 
             elif self.format_mode == ToolBarEnum.clear_ad.value:

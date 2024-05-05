@@ -8,9 +8,13 @@ import re
 from Businese.FormatMode.LineWrapFormat import LineWrap
 
 
-class LineWrapV2(LineWrap):
+class LineWrapV3:
 
-    def check_str_is_line_v2(self, content: str) -> list:
+    def __init__(self):
+        self.__warp_tag_left: list = ['。', '！', '!' '”', "…", "？", '?', '；', ';']  # 左侧碰到这些字符，就可以正常换行了
+        self.__warp_tag_special: list = ['"']  # 左侧碰到这个字符，需要特殊判断。1:换行符中出现到这个字符之间，出现了偶数，表示可以换行。如果是个奇数，那么就不换行
+
+    def check_str_is_line(self, content: str) -> list:
         """
 
         :param content: 完整的，还没有处理过的文本内容
@@ -25,7 +29,7 @@ class LineWrapV2(LineWrap):
 
         format_content = content.replace("\u3000", "")
         format_content = format_content.replace(" ", "")
-        format_str: list = ['”“', '」「', '。“']
+        format_str: list = ['”“', '」「', '。“', '""']
         for key_str in format_str:
             format_content = re.sub(key_str, key_str[0] + '\n' + key_str[1], format_content)
         end_index = []  # 已经是正确的换行符下标
@@ -46,14 +50,12 @@ class LineWrapV2(LineWrap):
                     """
                     end_index.append(str_arr)
                     continue
-                if any(wrap_str == format_content[str_arr + 1] for wrap_str in self.wrap_character) or any(
-                        wrap_str == format_content[str_arr + 1] for wrap_str in self.right_str_list):
+                if any(wrap_str == format_content[str_arr + 1] for wrap_str in self.__warp_tag_left):
                     """
                     如果下一个字符出现了表示可以结束的符号(句号，问号，感叹号，分号，结束双引号),那么就是没结束
                     """
                     format_content = replace_char_at_index(format_content, str_arr, "")
-                elif any(wrap_str == format_content[str_arr - 1] for wrap_str in self.wrap_character) or any(
-                        wrap_str == format_content[str_arr - 1] for wrap_str in self.right_str_list):
+                elif any(wrap_str == format_content[str_arr - 1] for wrap_str in self.__warp_tag_left) or any(wrap_str == format_content[str_arr - 1] for wrap_str in self.__warp_tag_special):
                     """
                     如果上一个字符出现了表示对话结束的符号，那么就表示话说完了
                     """

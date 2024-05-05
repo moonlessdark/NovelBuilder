@@ -181,9 +181,5 @@ class LineWrap:
         :param content_list:
         :return:
         """
-        content: str = ""
-        for i_str in content_list:
-            if " " in i_str:
-                i_str = i_str.replace(" ", "")
-            content = content + i_str + '\n'
+        content: str = "\n".join(content_list)
         return content
