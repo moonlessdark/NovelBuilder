@@ -1,6 +1,7 @@
 import platform
 
 from PySide6 import QtWidgets, QtCore, QtGui
+from PySide6.QtCore import Qt
 
 from Utils.dataClass import ToolBarEnum
 
@@ -138,6 +139,23 @@ class QMainElement(QtWidgets.QMainWindow):
         self.dock.setVisible(False)
 
         self._load_main_layout()
+
+        self.manual_file_item_list.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.manual_file_item_list.itemDoubleClicked.connect(self.list_widget_edit_record)
+
+    def list_widget_del_record(self):
+        """
+        删除记录
+        :return:
+        """
+        _row_index = self.manual_file_item_list.currentRow()
+        self.manual_file_item_list.takeItem(_row_index)
+
+    def list_widget_edit_record(self, item):
+        # 创建一个文本编辑器来编辑条目
+        text, ok = QtWidgets.QInputDialog.getText(self, '编辑条目', '请输入新的文本:', QtWidgets.QLineEdit.Normal, item.text())
+        if ok and text != '':
+            item.setText(text)
 
     def _load_main_layout(self):
         """

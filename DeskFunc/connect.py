@@ -1,6 +1,7 @@
 import os
+import re
 
-from PySide6 import QtGui, QtCore
+from PySide6 import QtGui, QtCore, QtWidgets
 from PySide6.QtGui import QTextCursor
 from PySide6.QtWidgets import QFileDialog, QMessageBox
 
@@ -52,6 +53,8 @@ class MainFunc(QMainElement):
         self.manual_format_qth.sin_out_information.connect(self.print_novel_error_information)
         self.manual_format_qth.sin_out_select_error_str.connect(self.manual_select_str)
         self.manual_format_qth.sin_work_status_loading.connect(self.setup_loading_label)
+
+        self.manual_file_item_list.customContextMenuRequested[QtCore.QPoint].connect(self.right_widget_menu)
 
     def tool_bar_func(self, option):
         """
@@ -258,13 +261,18 @@ class MainFunc(QMainElement):
         """
         item = self.manual_file_item_list.selectedItems()[0]
         item_path: str = self.file_items_dict.get(item.text())
-        file_path = item_path + item.text()
-        self.trigger_open_file(item.text())
+        if item_path is None:
+            # 说明是直接新增的记录，不是从本地读取的
+            self.novel_edit_print.moveCursor(QTextCursor.Start)
+            self.print_content("")
+        else:
+            file_path = item_path + item.text()
+            self.trigger_open_file(item.text())
 
-        self.read_novel_qth.get_param(file_path)
-        self.read_novel_qth.start()
+            self.read_novel_qth.get_param(file_path)
+            self.read_novel_qth.start()
 
-        self.novel_edit_print.moveCursor(QTextCursor.Start)
+            self.novel_edit_print.moveCursor(QTextCursor.Start)
 
     def __format_manual_save_item_clicked_novel_content(self):
         """
@@ -275,12 +283,21 @@ class MainFunc(QMainElement):
         if self.manual_file_item_list.selectedItems():
             item = self.manual_file_item_list.selectedItems()[0]
             item_path: str = self.file_items_dict.get(item.text())
+            if item_path is None:
+                # 如果这个文件是单独新增的，还没有文件路径的，需要制定一下，并给他更新一下路径
+                save_novel_path = QFileDialog.getExistingDirectory(None, '选择文件保存目录', os.getcwd())
+                if save_novel_path != "":
+                    item_path = save_novel_path + '/'
+                    self.file_items_dict[item.text()] = item_path  # 维护一下左侧列表文件对应的目录
+                else:
+                    self.print_information('请选择保存路径')
+                    return None
             file_path = item_path + item.text()
             with open(file_path, "w+", encoding="utf-8") as f:
                 f.write(content)
-                self.show_message_to_status_bar("文件 %s 已更新" % item.text())
+                self.print_information("文件 %s 已更新" % item.text())
         else:
-            self.show_message_to_status_bar("还未选中需要保存的文件")
+            self.print_information("还未选中需要保存的文件")
 
     def format_manual_save_other_path(self):
         """
@@ -313,3 +330,38 @@ class MainFunc(QMainElement):
         """
         self.status.showMessage(text)
         self.setup_loading_label(False)
+
+    def right_widget_menu(self, point):
+
+        pop_menu = QtWidgets.QMenu()
+        pop_menu.addAction(QtGui.QAction('添加', self, triggered=self.list_widget_add_record))
+        pop_menu.addAction(QtGui.QAction('删除', self, triggered=self.list_widget_del_record))
+        pop_menu.exec_(QtGui.QCursor.pos())
+
+    def list_widget_add_record(self):
+        """
+        文件列表新增记录
+        :return:
+        """
+
+        def find_numbers(input_str):
+            return re.findall(r'\d+', input_str)
+
+        _none_name_file_list: list = []
+        for _f_item_row in range(self.manual_file_item_list.count()):
+            _s_item: str = self.manual_file_item_list.item(_f_item_row).text()
+            if '未命名' in _s_item:
+                _none_name_file_list.append(_s_item.replace(".txt", ""))
+
+        _new_file_name = '未命名'
+        if len(_none_name_file_list) > 0:
+            _ix_list: list = []
+            for ix in _none_name_file_list:
+                _r: list = find_numbers(ix)
+                if len(_r) > 0:
+                    _ix_list.append(int(_r[0]))
+            if len(_ix_list) == 0:
+                _ix_list.append(0)
+
+            _new_file_name = '未命名-' + str(max(_ix_list) + 1)
+        self.manual_file_item_list.addItem(QtWidgets.QListWidgetItem(_new_file_name+".txt"))
