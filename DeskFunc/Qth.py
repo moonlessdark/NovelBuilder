@@ -118,7 +118,10 @@ class ManualFormat(QThread):
                 处理非段落换行。用于处理盗版小说爬去的异常换行
                 如果要写加强版的话，那就是在此基础上，再判断双引号中的内容是否需要换行
                 """
-                content_list: list = self.line_wrap.check_str_is_line(self.content)
+                # 以下内容为 预处理
+                content: str = self.line_wrap.plus_str_format(self.content)
+                # 开始处理
+                content_list: list = self.line_wrap.check_str_is_line(content)
                 content: str = LineWrap().format_merge_list(content_list)
 
             elif self.format_mode == ToolBarEnum.clear_ad.value:

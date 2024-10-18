@@ -83,3 +83,17 @@ class LineWrapV3:
             if '\u3000' not in content_list[arr_index]:
                 content_list[arr_index] = '\u3000\u3000' + str(content_list[arr_index])
         return content_list
+
+    @staticmethod
+    def plus_str_format(content: str) -> str:
+        """
+        打个补丁先
+        检查所有结束双引号的前面是不是一个 换行符，如果是的话，那么就处理一下
+        :param content:
+        :return:
+        """
+        __f_str_list: list = ['”', '」']
+        __f_c: str = content
+        for _f_str in __f_str_list:
+            __f_c: str = __f_c.replace('\n'+_f_str, _f_str)
+        return __f_c
