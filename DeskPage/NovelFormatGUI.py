@@ -155,6 +155,8 @@ class QMainElement(QtWidgets.QMainWindow):
         # 创建一个文本编辑器来编辑条目
         text, ok = QtWidgets.QInputDialog.getText(self, '编辑条目', '请输入新的文本:', QtWidgets.QLineEdit.Normal, item.text())
         if ok and text != '':
+            if '.txt' not in text:
+                text = text + '.txt'
             item.setText(text)
 
     def _load_main_layout(self):
