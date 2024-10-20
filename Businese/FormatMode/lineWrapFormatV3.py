@@ -120,5 +120,5 @@ class LineWrapV3:
             left_str = novel_str_list[0]
             right_str = novel_str_list[1]
             text = left_str + str("".join(newline)).replace("\n", "") + right_str
-            print("____>>>>>>" + str("".join(newline)))
+            # print("____>>>>>>" + str("".join(newline)))
         return text
