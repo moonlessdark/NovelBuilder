@@ -2,6 +2,7 @@ import platform
 
 from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QPalette, QColor
 
 from Utils.dataClass import ToolBarEnum
 
@@ -11,14 +12,13 @@ class QMainElement(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.resize(800, 600)  # 设置窗口的大小
+        self.setMinimumSize(800, 600)
         self.setWindowTitle("NovelFormat")  # 设置窗口的标题
 
         if platform.system() == "Windows":
             icon_path: str = './_internal/Resources/Images/'
         else:
             icon_path: str = './Resources/Images/'
-            print(f"当前的文件路径是：{icon_path}")
         QtCore.QDir.addSearchPath('icons', icon_path)
         self.setWindowIcon(QtGui.QIcon('icons:file.svg'))
 
@@ -148,6 +148,12 @@ class QMainElement(QtWidgets.QMainWindow):
         self.novel_edit_print = QtWidgets.QPlainTextEdit()
         self.novel_edit_print.setPlaceholderText("等待加载小说内容")
         self.novel_edit_print.setEnabled(False)  # 默认禁止，等出现内容的时候再放开
+
+        palette = QPalette()
+        palette.setColor(QPalette.Base, QColor('#333333'))  # 设置背景色为 淡黑色
+        palette.setColor(QPalette.Text, QColor('white'))  # 设置文字颜色为白色
+        palette.setColor(QPalette.PlaceholderText, QColor('white'))  # 设置背景文字颜色为白色
+        self.novel_edit_print.setPalette(palette)
 
         """
         dock widget
