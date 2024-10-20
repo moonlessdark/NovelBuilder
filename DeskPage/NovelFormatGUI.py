@@ -61,16 +61,25 @@ class QMainElement(QtWidgets.QMainWindow):
                                                                ToolBarEnum.change_lan.value, self)
         self.tool_bar.addAction(self.tool_action_change_zh_Traditional)
 
+        self.tool_action_type_setting = QtGui.QAction(QtGui.QIcon("icons:clear.png"), ToolBarEnum.type_setting.value, self)
+        self.tool_bar.addAction(self.tool_action_type_setting)
+
         self.tool_action_clear_ad = QtGui.QAction(QtGui.QIcon("icons:clear.png"), ToolBarEnum.clear_ad.value, self)
         self.tool_bar.addAction(self.tool_action_clear_ad)
 
         self.tool_action_remove_spaces_between_quotes = QtGui.QAction(QtGui.QIcon("icons:clear.png"),
-                                                                      ToolBarEnum.tool_action_remove_spaces_between_quotes.value, self)
+                                                                      ToolBarEnum.remove_spaces_between_quotes.value,
+                                                                      self)
         self.tool_bar.addAction(self.tool_action_remove_spaces_between_quotes)
 
         self.tool_action_format_line_warp = QtGui.QAction(QtGui.QIcon("icons:clear.png"),
                                                           ToolBarEnum.format_line_warp.value, self)
         self.tool_bar.addAction(self.tool_action_format_line_warp)
+
+        self.tool_action_format_line_warp_display_width = QtGui.QAction(QtGui.QIcon("icons:clear.png"),
+                                                                        ToolBarEnum.format_line_warp_display_width.value,
+                                                                        self)
+        self.tool_bar.addAction(self.tool_action_format_line_warp_display_width)
 
         self.status = self.statusBar()  # 创建一个状态栏,用于显示状态信息
 

@@ -123,11 +123,13 @@ class ManualFormat(QThread):
                 # 开始处理
                 content_list: list = self.line_wrap.check_str_is_line(content)
                 content: str = LineWrap().format_merge_list(content_list)
-            elif self.format_mode == ToolBarEnum.tool_action_remove_spaces_between_quotes.value:
+            elif self.format_mode == ToolBarEnum.remove_spaces_between_quotes.value:
                 """
                 去除双引号中间的异常换行
                 """
                 content = self.line_wrap.plus_str_remove_spaces_between_quotes(self.content)
+            elif self.format_mode == ToolBarEnum.format_line_warp_display_width.value:
+                content = self.line_wrap.check_str_in_display_width(self.content)
 
             elif self.format_mode == ToolBarEnum.clear_ad.value:
                 """
@@ -145,6 +147,11 @@ class ManualFormat(QThread):
                 繁简互换
                 """
                 content = tradition2simple(self.content)
+            elif self.format_mode == ToolBarEnum.type_setting.value:
+                """
+                排版
+                """
+                content: str = self.line_wrap.first_line_tab(self.content)
         except Exception as e:
             # 打印异常信息
             self.sin_out_information.emit(str(e))

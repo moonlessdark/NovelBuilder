@@ -5,7 +5,8 @@
 """
 import re
 
-from Businese.FormatMode.LineWrapFormat import LineWrap
+from Businese.FormatMode.str_display_width import gbkwordslen
+from collections import Counter
 
 
 class LineWrapV3:
@@ -67,22 +68,26 @@ class LineWrapV3:
             if 0 < len(end_index) == len(str_list):
                 break
         format_content: str = format_content.replace("\n\n", "\n")
-        return self.first_line_tab(format_content)
+        return format_content.split('\n')
 
     @staticmethod
-    def first_line_tab(content: str or list) -> list:
+    def first_line_tab(content: str or list) -> str:
         """
-        首行缩进
+        首行缩进和段落插入空白行
         :param content:
         :return:
         """
         if type(content) == str:
             content: list = content.split("\n")
         content_list: list = content
+        new_content_list: list = []
         for arr_index in range(len(content_list)):
-            if '\u3000' not in content_list[arr_index]:
-                content_list[arr_index] = '\u3000\u3000' + str(content_list[arr_index])
-        return content_list
+            _temp_str = content_list[arr_index].strip()
+            if _temp_str == "":
+                continue
+            elif '\u3000\u3000' not in _temp_str:
+                new_content_list.append('\u3000\u3000' + str(_temp_str) + '\n')
+        return "\n".join(new_content_list)
 
     @staticmethod
     def plus_str_format(content: str) -> str:
@@ -122,3 +127,35 @@ class LineWrapV3:
             text = left_str + str("".join(newline)).replace("\n", "") + right_str
             # print("____>>>>>>" + str("".join(newline)))
         return text
+
+    def check_str_in_display_width(self, content: str) -> str:
+        """
+        按照屏幕显示宽度来判断要不是移除换行符
+        这个方法逻辑简单很多
+        :param content:
+        :return:
+        """
+        if type(content) == str:
+            content: list = content.split("\n")
+        content_list: list = content
+        _line_str_display_width: list = []
+        for str_w in content_list:
+            _line_str_display_width.append(gbkwordslen(str_w))
+        # 大部份的宽度是这个值，在这个值附近偏移量5之内的换行符，都可以去掉
+        most_line_width: int = Counter(_line_str_display_width).most_common(1)[0][0]
+
+        new_content: str = ""
+        for str_width, str_line in zip(_line_str_display_width, content_list):
+            if not most_line_width - 5 <= str_width <= most_line_width + 5:
+                # 在这个值附近偏移量5之内的换行符，都可以去掉
+                str_line = str_line.strip() + '\n'
+            else:
+                # 如果在这个范围内，但是又以为句号结尾。那么就当这句话说完了
+                if str_line.strip()[-1:] in self.__warp_tag_left + self.__warp_tag_special:
+                    str_line = str_line.strip() + '\n'
+                else:
+                    str_line = str_line.strip()
+            new_content += str_line
+        if new_content == "":
+            new_content = content
+        return new_content
