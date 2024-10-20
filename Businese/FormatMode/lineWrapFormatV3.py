@@ -97,3 +97,28 @@ class LineWrapV3:
         for _f_str in __f_str_list:
             __f_c: str = __f_c.replace('\n'+_f_str, _f_str)
         return __f_c
+
+    @staticmethod
+    def plus_str_remove_spaces_between_quotes(text: str) -> str:
+        """
+        补丁2
+        使用正则表达式匹配双引号(中文模式)之间的换行符，并将换行符剔除掉
+        :param text:
+        :return:
+        """
+        # res_f: str = re.sub(r'(“[^”]*?\n[^”]*?”)', r'\1\2', text)
+
+        # res_f: str = re.sub(r'(“[^"]*)\n([^"]*”)', r'\1\2', text)
+        def find_newlines_between_quotes(text):
+            # 正则表达式匹配双引号之间的换行符
+            newlines_between_quotes = re.findall(r'(“[^”]*?)\n([^”]*?”)', text)
+            return newlines_between_quotes
+
+        newlines = find_newlines_between_quotes(text)
+        for newline in newlines:
+            novel_str_list: list = text.split(str("\n".join(newline)))
+            left_str = novel_str_list[0]
+            right_str = novel_str_list[1]
+            text = left_str + str("".join(newline)).replace("\n", "") + right_str
+            print("____>>>>>>" + str("".join(newline)))
+        return text

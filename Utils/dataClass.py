@@ -9,6 +9,7 @@ class ToolBarEnum(Enum):
     save_file: str = "保存"
     change_lan: str = "繁简互换"
     clear_ad: str = "清理广告"
+    tool_action_remove_spaces_between_quotes = "对话中的错误换行"
     format_line_warp: str = "非段落换行"
 
     """

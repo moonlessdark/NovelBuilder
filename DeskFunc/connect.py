@@ -80,6 +80,7 @@ class MainFunc(QMainElement):
             self.manual_format_qth.get_param(option.text(), novel_content)
             self.manual_format_qth.start()
 
+
     def __load_text_list(self):
         """
         加载小说列表
@@ -103,8 +104,7 @@ class MainFunc(QMainElement):
 
         file_items_tuple: tuple[list[str], str] = QFileDialog.getOpenFileNames(self, caption="请选择需要处理的文件",
                                                                                dir=get_download_path(),
-                                                                               selectedFilter="Text Files (*.txt);"
-                                                                                              "XML Files (*.xml)")
+                                                                               filter="Text Files (*.txt)")
         file_items = file_items_tuple[0]
         if len(file_items) > 0:
             self.file_items_dict = {}

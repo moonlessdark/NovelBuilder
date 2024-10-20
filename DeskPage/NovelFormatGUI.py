@@ -50,7 +50,8 @@ class QMainElement(QtWidgets.QMainWindow):
         self.tool_bar.setIconSize(QtCore.QSize(20, 20))  # 设置图标大小
         self.tool_bar.setToolButtonStyle(QtGui.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)  # 设置工具栏的按钮样式为文本在图标左侧
 
-        self.tool_action_open_file = QtGui.QAction(QtGui.QIcon('icons:file-open.png'), ToolBarEnum.open_file.value, self)
+        self.tool_action_open_file = QtGui.QAction(QtGui.QIcon('icons:file-open.png'), ToolBarEnum.open_file.value,
+                                                   self)
         self.tool_bar.addAction(self.tool_action_open_file)  # 将QAction对象添加到工具栏中
 
         self.tool_action_save_file = QtGui.QAction(QtGui.QIcon("icons:save.png"), ToolBarEnum.save_file.value, self)
@@ -62,6 +63,10 @@ class QMainElement(QtWidgets.QMainWindow):
 
         self.tool_action_clear_ad = QtGui.QAction(QtGui.QIcon("icons:clear.png"), ToolBarEnum.clear_ad.value, self)
         self.tool_bar.addAction(self.tool_action_clear_ad)
+
+        self.tool_action_remove_spaces_between_quotes = QtGui.QAction(QtGui.QIcon("icons:clear.png"),
+                                                                      ToolBarEnum.tool_action_remove_spaces_between_quotes.value, self)
+        self.tool_bar.addAction(self.tool_action_remove_spaces_between_quotes)
 
         self.tool_action_format_line_warp = QtGui.QAction(QtGui.QIcon("icons:clear.png"),
                                                           ToolBarEnum.format_line_warp.value, self)
@@ -153,7 +158,8 @@ class QMainElement(QtWidgets.QMainWindow):
 
     def list_widget_edit_record(self, item):
         # 创建一个文本编辑器来编辑条目
-        text, ok = QtWidgets.QInputDialog.getText(self, '编辑条目', '请输入新的文本:', QtWidgets.QLineEdit.Normal, item.text())
+        text, ok = QtWidgets.QInputDialog.getText(self, '编辑条目', '请输入新的文本:', QtWidgets.QLineEdit.Normal,
+                                                  item.text())
         if ok and text != '':
             if '.txt' not in text:
                 text = text + '.txt'

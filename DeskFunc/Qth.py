@@ -123,6 +123,11 @@ class ManualFormat(QThread):
                 # 开始处理
                 content_list: list = self.line_wrap.check_str_is_line(content)
                 content: str = LineWrap().format_merge_list(content_list)
+            elif self.format_mode == ToolBarEnum.tool_action_remove_spaces_between_quotes.value:
+                """
+                去除双引号中间的异常换行
+                """
+                content = self.line_wrap.plus_str_remove_spaces_between_quotes(self.content)
 
             elif self.format_mode == ToolBarEnum.clear_ad.value:
                 """
