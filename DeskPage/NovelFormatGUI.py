@@ -15,9 +15,10 @@ class QMainElement(QtWidgets.QMainWindow):
         self.setWindowTitle("NovelFormat")  # 设置窗口的标题
 
         if platform.system() == "Windows":
-            icon_path: str = '_internal/Resources/Images/'
+            icon_path: str = './_internal/Resources/Images/'
         else:
-            icon_path: str = 'Resources/Images/'
+            icon_path: str = './Resources/Images/'
+            print(f"当前的文件路径是：{icon_path}")
         QtCore.QDir.addSearchPath('icons', icon_path)
         self.setWindowIcon(QtGui.QIcon('icons:file.svg'))
 
@@ -61,22 +62,22 @@ class QMainElement(QtWidgets.QMainWindow):
                                                                ToolBarEnum.change_lan.value, self)
         self.tool_bar.addAction(self.tool_action_change_zh_Traditional)
 
-        self.tool_action_type_setting = QtGui.QAction(QtGui.QIcon("icons:clear.png"), ToolBarEnum.type_setting.value, self)
+        self.tool_action_type_setting = QtGui.QAction(QtGui.QIcon("icons:format.svg"), ToolBarEnum.type_setting.value, self)
         self.tool_bar.addAction(self.tool_action_type_setting)
 
         self.tool_action_clear_ad = QtGui.QAction(QtGui.QIcon("icons:clear.png"), ToolBarEnum.clear_ad.value, self)
         self.tool_bar.addAction(self.tool_action_clear_ad)
 
-        self.tool_action_remove_spaces_between_quotes = QtGui.QAction(QtGui.QIcon("icons:clear.png"),
+        self.tool_action_remove_spaces_between_quotes = QtGui.QAction(QtGui.QIcon("icons:format_str.png"),
                                                                       ToolBarEnum.remove_spaces_between_quotes.value,
                                                                       self)
         self.tool_bar.addAction(self.tool_action_remove_spaces_between_quotes)
 
-        self.tool_action_format_line_warp = QtGui.QAction(QtGui.QIcon("icons:clear.png"),
+        self.tool_action_format_line_warp = QtGui.QAction(QtGui.QIcon("icons:format_str.png"),
                                                           ToolBarEnum.format_line_warp.value, self)
         self.tool_bar.addAction(self.tool_action_format_line_warp)
 
-        self.tool_action_format_line_warp_display_width = QtGui.QAction(QtGui.QIcon("icons:clear.png"),
+        self.tool_action_format_line_warp_display_width = QtGui.QAction(QtGui.QIcon("icons:format_str.png"),
                                                                         ToolBarEnum.format_line_warp_display_width.value,
                                                                         self)
         self.tool_bar.addAction(self.tool_action_format_line_warp_display_width)
@@ -131,12 +132,18 @@ class QMainElement(QtWidgets.QMainWindow):
         self.manual_button_replace_text = QtWidgets.QPushButton("替换", widget_select)
         self.manual_button_replace_text_all = QtWidgets.QPushButton("替换全部", widget_select)
 
-        lay_out_select_replace = QtWidgets.QGridLayout(widget_select)
-        lay_out_select_replace.addWidget(self.manual_input_select_text, 0, 0, 1, 3)
-        lay_out_select_replace.addWidget(self.manual_input_replace_text, 1, 0, 1, 3)
-        lay_out_select_replace.addWidget(self.manual_button_select_text, 2, 0)
-        lay_out_select_replace.addWidget(self.manual_button_replace_text, 2, 1)
-        lay_out_select_replace.addWidget(self.manual_button_replace_text_all, 2, 2)
+        lay_out_select_replace_1 = QtWidgets.QVBoxLayout()
+        lay_out_select_replace_1.addWidget(self.manual_input_select_text)
+        lay_out_select_replace_1.addWidget(self.manual_input_replace_text)
+
+        lay_out_select_replace_2 = QtWidgets.QHBoxLayout()
+        lay_out_select_replace_2.addWidget(self.manual_button_select_text)
+        lay_out_select_replace_2.addWidget(self.manual_button_replace_text)
+        lay_out_select_replace_2.addWidget(self.manual_button_replace_text_all)
+
+        lay_out_select_replace = QtWidgets.QVBoxLayout(widget_select)
+        lay_out_select_replace.addLayout(lay_out_select_replace_1)
+        lay_out_select_replace.addLayout(lay_out_select_replace_2)
 
         self.novel_edit_print = QtWidgets.QPlainTextEdit()
         self.novel_edit_print.setPlaceholderText("等待加载小说内容")
