@@ -148,6 +148,7 @@ class QMainElement(QtWidgets.QMainWindow):
         self.novel_edit_print = QtWidgets.QPlainTextEdit()
         self.novel_edit_print.setPlaceholderText("等待加载小说内容")
         self.novel_edit_print.setEnabled(False)  # 默认禁止，等出现内容的时候再放开
+        self.novel_edit_print.setLineWrapMode(QtWidgets.QPlainTextEdit.LineWrapMode.NoWrap)
 
         palette = QPalette()
         palette.setColor(QPalette.Base, QColor('#333333'))  # 设置背景色为 淡黑色

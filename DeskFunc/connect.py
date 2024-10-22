@@ -254,11 +254,19 @@ class MainFunc(QMainElement):
             self.novel_edit_print.setReadOnly(False)  # 允许编辑
         self.novel_edit_print.setPlainText(content + '\n')
 
-    def __format_manual_show_item_clicked_novel_content(self):
+    def __format_manual_show_item_clicked_novel_content(self,  checked=False, mouseEvent=None):
         """
         显示选中的小说
         :return:
         """
+        # 检查是否有mouseEvent对象，并检查点击次数
+        if mouseEvent and mouseEvent.button() == mouseEvent.LeftButton:
+            if mouseEvent.clickCount() == 2:
+                QMessageBox.information(self, 'Double Click', 'Double clicked!')
+                return None
+            elif mouseEvent.clickCount() == 1:
+                QMessageBox.information(self, 'Single Click', 'Single clicked!')
+
         item = self.manual_file_item_list.selectedItems()[0]
         item_path: str = self.file_items_dict.get(item.text())
         if item_path is None:
@@ -332,11 +340,29 @@ class MainFunc(QMainElement):
         self.setup_loading_label(False)
 
     def right_widget_menu(self, point):
-
+        """
+        右键
+        :param point:
+        :return:
+        """
         pop_menu = QtWidgets.QMenu()
         pop_menu.addAction(QtGui.QAction('添加', self, triggered=self.list_widget_add_record))
-        pop_menu.addAction(QtGui.QAction('删除', self, triggered=self.list_widget_del_record))
+        _row_index: int = self.manual_file_item_list.currentRow()
+        if _row_index != -1:
+            pop_menu.addAction(QtGui.QAction('删除', self, triggered=self.list_widget_del_record))
+            pop_menu.addAction(QtGui.QAction('编辑', self, triggered=self.list_widget_edit_record_right))
         pop_menu.exec_(QtGui.QCursor.pos())
+
+    def list_widget_edit_record_right(self):
+        _row_index: int = self.manual_file_item_list.currentRow()
+        if _row_index == -1:
+            self.print_information("请选择需要编辑的文件名")
+            return None
+        text, ok = QtWidgets.QInputDialog.getText(self, '编辑条目', '请输入新的文本:', QtWidgets.QLineEdit.Normal)
+        if ok and text != '':
+            if '.txt' not in text:
+                text = text + '.txt'
+            self.manual_file_item_list.item(_row_index).setText(text)
 
     def list_widget_add_record(self):
         """
