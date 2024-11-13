@@ -15,7 +15,8 @@ class MainFunc(QMainElement):
 
     def __init__(self):
         super().__init__()
-        self.file_items_dict = {}  # 选中的文件列表
+        self.file_items_dict: dict = {}  # 选中的文件列表和文件目录
+        self.file_items_content_dict: dict = {}  # 文件名对应的显示内容
 
         self.read_novel_qth = ReadNovelQth()
         self.manual_format_qth = ManualFormatQth()
