@@ -137,18 +137,17 @@ class LineWrapV3:
         """
         if type(content) == str:
             content: list = content.split("\n")
-        content_list: list = content
+        content_list: list = list(filter(lambda num: num != "", content))
         _line_str_display_width: list = []
         for str_w in content_list:
-            if gbkwordslen(str_w) != 0:
-                _line_str_display_width.append(gbkwordslen(str_w))
+            _line_str_display_width.append(gbkwordslen(str_w))
         # 大部份的宽度是这个值，在这个值附近偏移量5之内的换行符，都可以去掉
         # most_line_width: int = Counter(_line_str_display_width).most_common(1)[0][0]
         # 但是根据真实情况，应该拿最大的长度比较合理
         max_line_width: int = max(_line_str_display_width)
         new_content: str = ""
         for str_width, str_line in zip(_line_str_display_width, content_list):
-            if not max_line_width - 5 <= str_width <= max_line_width + 5:
+            if not max_line_width - 5 <= str_width <= max_line_width:
                 # 在这个值附近偏移量5之内的换行符，都可以去掉
                 str_line = str_line.strip() + '\n'
             else:
