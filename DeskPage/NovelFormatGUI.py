@@ -184,8 +184,8 @@ class QMainElement(QtWidgets.QMainWindow):
         text, ok = QtWidgets.QInputDialog.getText(self, '编辑条目', '请输入新的文本:', QtWidgets.QLineEdit.Normal,
                                                   item.text())
         if ok and text != '':
-            if '.txt' not in text:
-                text = text + '.txt'
+            # if '.txt' not in text:
+            #     text = text + '.txt'
             item.setText(text)
 
     def _load_main_layout(self):

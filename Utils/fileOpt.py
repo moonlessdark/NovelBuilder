@@ -27,6 +27,7 @@ class FileOpt:
         :param file_path: txt文件的路径
         :return:
         """
+        file_path = file_path + '.txt' if '.txt' not in file_path else file_path
         with open(file_path, "rb") as f:
             content = f.read()
         content_encode = chardet.detect(content)  # 推断一下文本内容的编码格式

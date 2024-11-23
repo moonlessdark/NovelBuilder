@@ -3,6 +3,7 @@ from PySide6.QtCore import QThread, QWaitCondition, QMutex, Signal
 from Businese.FormatMode.ClearAdString import ClearAd
 from Businese.FormatMode.LineWrapFormat import LineWrap
 from Businese.FormatMode.lineWrapFormatV3 import LineWrapV3
+from Businese.FormatModeV2.utils import FormatStr
 from Utils.dataClass import ToolBarEnum
 from Utils.fileOpt import FileOpt
 from Utils.tradition import tradition2simple
@@ -67,7 +68,7 @@ class ManualFormat(QThread):
         super().__init__()
 
         self.line_wrap = LineWrapV3()
-
+        self.line_wrap_v2 = FormatStr()
         self.working = True
         self.is_First_time = True
         self.cond = QWaitCondition()
@@ -110,6 +111,7 @@ class ManualFormat(QThread):
     def run(self) -> None:
         content = ""
         self.mutex.lock()
+        import time
 
         try:
             self.sin_work_status_loading.emit(True)
@@ -121,8 +123,10 @@ class ManualFormat(QThread):
                 # 以下内容为 预处理
                 content: str = self.line_wrap.plus_str_format(self.content)
                 # 开始处理
-                content_list: list = self.line_wrap.check_str_is_line(content)
-                content: str = LineWrap().format_merge_list(content_list)
+                # content_list: list = self.line_wrap.check_str_is_line(content)
+                # content: str = LineWrap().format_merge_list(content_list)
+                content = self.line_wrap_v2.format(content)
+
             elif self.format_mode == ToolBarEnum.remove_spaces_between_quotes.value:
                 """
                 去除双引号中间的异常换行

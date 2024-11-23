@@ -100,7 +100,7 @@ class LineWrapV3:
         __f_str_list: list = ['”', '」']
         __f_c: str = content
         for _f_str in __f_str_list:
-            __f_c: str = __f_c.replace('\n'+_f_str, _f_str)
+            __f_c: str = __f_c.replace('\n'+"     "+_f_str, _f_str)
         return __f_c
 
     @staticmethod
@@ -147,7 +147,7 @@ class LineWrapV3:
         max_line_width: int = max(_line_str_display_width)
         new_content: str = ""
         for str_width, str_line in zip(_line_str_display_width, content_list):
-            if not max_line_width - 5 <= str_width <= max_line_width:
+            if not max_line_width - 7 <= str_width <= max_line_width:
                 # 在这个值附近偏移量5之内的换行符，都可以去掉
                 str_line = str_line.strip() + '\n'
             else:
