@@ -1,4 +1,5 @@
 import os
+import platform
 import sys
 
 import chardet
@@ -78,7 +79,7 @@ class PathUtil:
 
     def __init__(self):
         # 判断调试模式
-        debug_vars = dict((a, b) for a, b in os.environ.items()
+        debug_vars = dict((a, b) for  a, b in os.environ.items()
                           if a.find('IPYTHONENABLE') >= 0)
         # 根据不同场景获取根目录
         if debug_vars.get("IPYTHONENABLE") == "True":
@@ -87,7 +88,13 @@ class PathUtil:
             self.rootPath = "./"
         elif getattr(sys, 'frozen', False):
             """当前为exe运行时"""
-            self.rootPath = os.getcwd() + '/_internal/'
+
+            # print(f"ss:{os.path.dirname(os.path.realpath(__file__))}")
+            if platform.system() == "Windows":
+                self.rootPath = os.getcwd()
+            else:
+                self.rootPath = os.path.dirname(os.path.realpath(sys.argv[0]))
+
         else:
             """正常执行"""
             self.rootPath = sys.path[1]
@@ -96,7 +103,7 @@ class PathUtil:
 
     def get_path_from_resources(self, file_name):
         """按照文件名拼接资源文件路径"""
-        file_path = "%s/Resources/%s" % (self.rootPath, file_name)
+        file_path = "%s/_internal/Resources/Images/%s" % (self.rootPath, file_name)
         return file_path
 
     # 生成资源文件目录访问路径

@@ -54,10 +54,8 @@ class FormatStr:
                 "作者：" in num or
                 len(re.findall(r'\d{4}年\d{1,2}月\d{1,2}日发表于', num)) == 1 or
                 len(re.findall(r'\d{4}年\d{1,2}月\d{1,2}日首发于', num)) == 1 or
-                num.find('----') >= 1 or
-                num.find('未完待续') >= 0 or
-                num.find('　　。') > 0 or
-                num.find('　　”') > 0
+                num.find('----') >= 0 or
+                num.find('未完待续') >= 0
             ):
 
                 if len(result_line_list) != 0:

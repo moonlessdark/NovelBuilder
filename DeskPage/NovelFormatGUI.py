@@ -5,12 +5,15 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QPalette, QColor
 
 from Utils.dataClass import ToolBarEnum
+from Utils.fileOpt import PathUtil
 
 
 class QMainElement(QtWidgets.QMainWindow):
 
     def __init__(self):
         super().__init__()
+
+        self.pu = PathUtil()
 
         self.setMinimumSize(800, 600)
         self.setWindowTitle("NovelFormat")  # 设置窗口的标题
@@ -20,7 +23,7 @@ class QMainElement(QtWidgets.QMainWindow):
         else:
             icon_path: str = './Resources/Images/'
         QtCore.QDir.addSearchPath('icons', icon_path)
-        self.setWindowIcon(QtGui.QIcon('icons:file.svg'))
+        self.setWindowIcon(QtGui.QIcon(self.pu.get_path_from_resources('file.png')))
 
         self.main_widget = QtWidgets.QWidget(self)  # 创建一个QWidget对象作为中央部件
         self.setCentralWidget(self.main_widget)  # 将中央部件设置为main_widget
@@ -51,33 +54,53 @@ class QMainElement(QtWidgets.QMainWindow):
         self.tool_bar.setIconSize(QtCore.QSize(20, 20))  # 设置图标大小
         self.tool_bar.setToolButtonStyle(QtGui.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)  # 设置工具栏的按钮样式为文本在图标左侧
 
-        self.tool_action_open_file = QtGui.QAction(QtGui.QIcon('icons:file-open.png'), ToolBarEnum.open_file.value,
-                                                   self)
+        # self.tool_action_open_file = QtGui.QAction(QtGui.QIcon('icons:file-open.png'), ToolBarEnum.open_file.value, self)
+        self.tool_action_open_file = QtGui.QAction(QtGui.QIcon(self.pu.get_path_from_resources('file-open.png')),
+                                                   ToolBarEnum.open_file.value, self)
+
         self.tool_bar.addAction(self.tool_action_open_file)  # 将QAction对象添加到工具栏中
 
-        self.tool_action_save_file = QtGui.QAction(QtGui.QIcon("icons:save.png"), ToolBarEnum.save_file.value, self)
+        # self.tool_action_save_file = QtGui.QAction(QtGui.QIcon("icons:save.png"), ToolBarEnum.save_file.value, self)
+        self.tool_action_save_file = QtGui.QAction(QtGui.QIcon(self.pu.get_path_from_resources('save.png')),
+                                                   ToolBarEnum.save_file.value, self)
+
         self.tool_bar.addAction(self.tool_action_save_file)
 
-        self.tool_action_change_zh_Traditional = QtGui.QAction(QtGui.QIcon("icons:change.png"),
+        # self.tool_action_change_zh_Traditional = QtGui.QAction(QtGui.QIcon("icons:change.png"), ToolBarEnum.change_lan.value, self)
+        self.tool_action_change_zh_Traditional = QtGui.QAction(QtGui.QIcon(self.pu.get_path_from_resources('change.png')),
                                                                ToolBarEnum.change_lan.value, self)
+
         self.tool_bar.addAction(self.tool_action_change_zh_Traditional)
 
-        self.tool_action_type_setting = QtGui.QAction(QtGui.QIcon("icons:format.svg"), ToolBarEnum.type_setting.value, self)
+        # self.tool_action_type_setting = QtGui.QAction(QtGui.QIcon("icons:format.svg"), ToolBarEnum.type_setting.value, self)
+        self.tool_action_type_setting = QtGui.QAction(QtGui.QIcon(self.pu.get_path_from_resources('format.png')),
+                                                      ToolBarEnum.type_setting.value, self)
+
         self.tool_bar.addAction(self.tool_action_type_setting)
 
-        self.tool_action_clear_ad = QtGui.QAction(QtGui.QIcon("icons:clear.png"), ToolBarEnum.clear_ad.value, self)
+        # self.tool_action_clear_ad = QtGui.QAction(QtGui.QIcon("icons:clear.png"), ToolBarEnum.clear_ad.value, self)
+        self.tool_action_clear_ad = QtGui.QAction(QtGui.QIcon(self.pu.get_path_from_resources('clear.png')),
+                                                  ToolBarEnum.clear_ad.value, self)
+
         self.tool_bar.addAction(self.tool_action_clear_ad)
 
-        self.tool_action_remove_spaces_between_quotes = QtGui.QAction(QtGui.QIcon("icons:format_str.png"),
+        # self.tool_action_remove_spaces_between_quotes = QtGui.QAction(QtGui.QIcon("icons:format_str.png"),
+        #                                                               ToolBarEnum.remove_spaces_between_quotes.value,
+        #                                                               self)
+        self.tool_action_remove_spaces_between_quotes = QtGui.QAction(QtGui.QIcon(self.pu.get_path_from_resources('format_str.png')),
                                                                       ToolBarEnum.remove_spaces_between_quotes.value,
                                                                       self)
         self.tool_bar.addAction(self.tool_action_remove_spaces_between_quotes)
 
-        self.tool_action_format_line_warp = QtGui.QAction(QtGui.QIcon("icons:format_str.png"),
+        # self.tool_action_format_line_warp = QtGui.QAction(QtGui.QIcon("icons:format_str.png"), ToolBarEnum.format_line_warp.value, self)
+        self.tool_action_format_line_warp = QtGui.QAction(QtGui.QIcon(self.pu.get_path_from_resources('format_str.png')),
                                                           ToolBarEnum.format_line_warp.value, self)
         self.tool_bar.addAction(self.tool_action_format_line_warp)
 
-        self.tool_action_format_line_warp_display_width = QtGui.QAction(QtGui.QIcon("icons:format_str.png"),
+        # self.tool_action_format_line_warp_display_width = QtGui.QAction(QtGui.QIcon("icons:format_str.png"),
+        #                                                                 ToolBarEnum.format_line_warp_display_width.value,
+        #                                                                 self)
+        self.tool_action_format_line_warp_display_width = QtGui.QAction(QtGui.QIcon(self.pu.get_path_from_resources('format_str.png')),
                                                                         ToolBarEnum.format_line_warp_display_width.value,
                                                                         self)
         self.tool_bar.addAction(self.tool_action_format_line_warp_display_width)
@@ -85,8 +108,9 @@ class QMainElement(QtWidgets.QMainWindow):
         self.status = self.statusBar()  # 创建一个状态栏,用于显示状态信息
 
         self.loading_label = QtWidgets.QLabel(self)
+
         # 设置GIF动画的路径
-        self.movie = QtGui.QMovie("./Resources/Images/loading.gif")  # 确保GIF文件在可执行文件同一目录下
+        self.movie = QtGui.QMovie(self.pu.get_path_from_resources("loading.gif"))  # 确保GIF文件在可执行文件同一目录下
         self.loading_label.setVisible(False)
         self.movie.setCacheMode(QtGui.QMovie.CacheMode.CacheAll)
         self.loading_label.setMovie(self.movie)
@@ -98,28 +122,34 @@ class QMainElement(QtWidgets.QMainWindow):
         self.manual_button_get_file_list = QtWidgets.QPushButton()
         # self.manual_button_get_file_list.setText("打开")
 
-        self.manual_button_get_file_list.setIcon(QtGui.QIcon('icons:file-open.png'))
+        self.manual_button_get_file_list.setIcon(QtGui.QIcon(self.pu.get_path_from_resources('icons:file-open.png')))
         self.manual_button_get_file_list.setFlat(True)
         # self.manual_button_get_file_list.setIconSize(QtCore.QSize(25, 25))
 
         self.manual_button_save_file = QtWidgets.QPushButton()
         # self.manual_button_save_file.setText("保存")
 
-        self.manual_button_save_file.setIcon(QtGui.QIcon('icons:save.png'))
+        # self.manual_button_save_file.setIcon(QtGui.QIcon('icons:save.png'))
+        self.manual_button_save_file.setIcon(QtGui.QIcon(self.pu.get_path_from_resources('icons:save.png')))
+
         self.manual_button_save_file.setFlat(True)
         # self.manual_button_save_file.setIconSize(QtCore.QSize(25, 25))
 
         self.manual_button_other_save_file = QtWidgets.QPushButton()
         # self.manual_button_other_save_file.setText("另存为")
 
-        self.manual_button_other_save_file.setIcon(QtGui.QIcon('icons:share.png'))
+        # self.manual_button_other_save_file.setIcon(QtGui.QIcon('icons:share.png'))
+        self.manual_button_other_save_file.setIcon(QtGui.QIcon(self.pu.get_path_from_resources('icons:share.png')))
+
         self.manual_button_other_save_file.setFlat(True)
         # self.manual_button_other_save_file.setIconSize(QtCore.QSize(25, 25))
 
         self.manual_button_execute_mode = QtWidgets.QPushButton()
         # self.manual_button_execute_mode.setText("开始执行")
 
-        self.manual_button_execute_mode.setIcon(QtGui.QIcon('icons:success.png'))
+        # self.manual_button_execute_mode.setIcon(QtGui.QIcon('icons:success.png'))
+        self.manual_button_execute_mode.setIcon(QtGui.QIcon(self.pu.get_path_from_resources('icons:success.png')))
+
         self.manual_button_execute_mode.setFlat(True)
         # self.manual_button_execute_mode.setIconSize(QtCore.QSize(25, 25))
 
