@@ -49,7 +49,9 @@ class FormatStr:
 
             if (
                 not num or
-                len(re.findall('第.*章', num)) == 1 or
+                num == "\n" or
+                len(re.findall('^[第]{1}[0-9]{1,2}章$', num)) == 1 or
+                len(re.findall('第[一二三四五六七八九十百千万壹贰叁肆伍陆柒捌玖拾佰仟]{1,6}章', num)) == 1 or
                 "作者:" in num or
                 "作者：" in num or
                 len(re.findall(r'\d{4}年\d{1,2}月\d{1,2}日发表于', num)) == 1 or
