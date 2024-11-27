@@ -125,7 +125,7 @@ class ManualFormat(QThread):
                 # 开始处理
                 # content_list: list = self.line_wrap.check_str_is_line(content)
                 # content: str = LineWrap().format_merge_list(content_list)
-                content = self.line_wrap_v2.format(content)
+                content = self.line_wrap_v2.format_str(content)
 
             elif self.format_mode == ToolBarEnum.remove_spaces_between_quotes.value:
                 """
