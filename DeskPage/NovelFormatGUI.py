@@ -156,7 +156,7 @@ class QMainElement(QtWidgets.QMainWindow):
         widget_select = QtWidgets.QWidget()
         self.manual_input_select_text = QtWidgets.QLineEdit(widget_select)
         self.manual_input_select_text.setPlaceholderText("请输入需要查询的内容")
-        self.manual_input_replace_text = QtWidgets.QLineEdit(widget_select)
+        self.manual_input_replace_text = QtWidgets.QTextEdit(widget_select)
         self.manual_input_replace_text.setPlaceholderText("请输入需要替换的内容")
         self.manual_button_select_text = QtWidgets.QPushButton("查询", widget_select)
         self.manual_button_replace_text = QtWidgets.QPushButton("替换", widget_select)
