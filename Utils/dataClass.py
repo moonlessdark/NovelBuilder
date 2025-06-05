@@ -13,6 +13,7 @@ class ToolBarEnum(Enum):
     remove_spaces_between_quotes = "对话中的错误换行"
     format_line_warp: str = "非段落换行(字符模式)"
     format_line_warp_display_width: str = "非段落换行(视觉模式)"
+    format_line_warp_tab: str = "非段落换行(缩进模式)"
 
     """
     菜单栏的文案

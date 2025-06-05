@@ -160,3 +160,38 @@ class LineWrapV3:
         if new_content == "":
             new_content = content
         return new_content
+
+    @staticmethod
+    def check_str_in_display_width_v2(content: str) -> str:
+        """
+        处理换行，缩进模式，按照首行缩进来判断。
+        :param content:
+        :return:
+        """
+        if type(content) == str:
+            content: list = content.split("\n")
+        content_list: list = list(filter(lambda num: num != "", content))
+
+        _line_str_list: list = []
+        _all_content_list: list = []
+        _is_passages: bool = False  # 默认是一段的话
+        for x in content_list:
+            if x.find('\u3000') == 0:
+                if len(_line_str_list) != 0:
+                    # 如果最新的一句话，找到的缩进符，且追加的数组中已经有内容了，说明上一句已经说完了。
+                    _line_str_list.append('\n')
+                    _ss_line_str: list = _line_str_list.copy()
+                    _all_content_list.append(_ss_line_str)
+                    _line_str_list.clear()
+            _line_str_list.append(x)
+        if len(_line_str_list) != 0:
+            # 结束循环了，发现还有一段话没有录入，那么就加入一下
+            _line_str_list.append('\n')
+            _ss_line_str: list = _line_str_list.copy()
+            _all_content_list.append(_ss_line_str)
+            _line_str_list.clear()
+        _all_content: str = ""
+        for _line_str_list in _all_content_list:
+            _new_line_str_list: list = _line_str_list.copy()
+            _all_content += "".join(_new_line_str_list)
+        return _all_content

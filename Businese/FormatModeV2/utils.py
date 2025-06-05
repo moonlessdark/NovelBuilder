@@ -42,7 +42,7 @@ class FormatStr:
 
     def format_str(self, content: str):
         """
-
+        格式化一下
         :param content:
         :return:
         """

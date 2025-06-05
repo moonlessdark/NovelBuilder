@@ -117,6 +117,7 @@ class ManualFormat(QThread):
             self.sin_work_status_loading.emit(True)
             if self.format_mode == ToolBarEnum.format_line_warp.value:
                 """
+                异常换行：字符模式
                 处理非段落换行。用于处理盗版小说爬去的异常换行
                 如果要写加强版的话，那就是在此基础上，再判断双引号中的内容是否需要换行
                 """
@@ -126,15 +127,21 @@ class ManualFormat(QThread):
                 # content_list: list = self.line_wrap.check_str_is_line(content)
                 # content: str = LineWrap().format_merge_list(content_list)
                 content = self.line_wrap_v2.format_str(content)
-
+            elif self.format_mode == ToolBarEnum.format_line_warp_display_width.value:
+                """
+                异常换行：视觉模式
+                """
+                content = self.line_wrap.check_str_in_display_width(self.content)
+            elif self.format_mode == ToolBarEnum.format_line_warp_tab.value:
+                """
+                异常换行：缩进模式
+                """
+                content = self.line_wrap.check_str_in_display_width_v2(self.content)
             elif self.format_mode == ToolBarEnum.remove_spaces_between_quotes.value:
                 """
                 去除双引号中间的异常换行
                 """
                 content = self.line_wrap.plus_str_remove_spaces_between_quotes(self.content)
-            elif self.format_mode == ToolBarEnum.format_line_warp_display_width.value:
-                content = self.line_wrap.check_str_in_display_width(self.content)
-
             elif self.format_mode == ToolBarEnum.clear_ad.value:
                 """
                 去除广告

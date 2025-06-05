@@ -3,7 +3,9 @@ import platform
 from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPalette, QColor
+from PySide6.QtWidgets import QHeaderView
 
+from DeskPage.QprintTable import CustomTableModel
 from Utils.dataClass import ToolBarEnum
 from Utils.fileOpt import PathUtil
 
@@ -67,8 +69,9 @@ class QMainElement(QtWidgets.QMainWindow):
         self.tool_bar.addAction(self.tool_action_save_file)
 
         # self.tool_action_change_zh_Traditional = QtGui.QAction(QtGui.QIcon("icons:change.png"), ToolBarEnum.change_lan.value, self)
-        self.tool_action_change_zh_Traditional = QtGui.QAction(QtGui.QIcon(self.pu.get_path_from_resources('change.png')),
-                                                               ToolBarEnum.change_lan.value, self)
+        self.tool_action_change_zh_Traditional = QtGui.QAction(
+            QtGui.QIcon(self.pu.get_path_from_resources('change.png')),
+            ToolBarEnum.change_lan.value, self)
 
         self.tool_bar.addAction(self.tool_action_change_zh_Traditional)
 
@@ -87,23 +90,32 @@ class QMainElement(QtWidgets.QMainWindow):
         # self.tool_action_remove_spaces_between_quotes = QtGui.QAction(QtGui.QIcon("icons:format_str.png"),
         #                                                               ToolBarEnum.remove_spaces_between_quotes.value,
         #                                                               self)
-        self.tool_action_remove_spaces_between_quotes = QtGui.QAction(QtGui.QIcon(self.pu.get_path_from_resources('format_str.png')),
-                                                                      ToolBarEnum.remove_spaces_between_quotes.value,
-                                                                      self)
+        self.tool_action_remove_spaces_between_quotes = QtGui.QAction(
+            QtGui.QIcon(self.pu.get_path_from_resources('format_str.png')),
+            ToolBarEnum.remove_spaces_between_quotes.value,
+            self)
         self.tool_bar.addAction(self.tool_action_remove_spaces_between_quotes)
 
         # self.tool_action_format_line_warp = QtGui.QAction(QtGui.QIcon("icons:format_str.png"), ToolBarEnum.format_line_warp.value, self)
-        self.tool_action_format_line_warp = QtGui.QAction(QtGui.QIcon(self.pu.get_path_from_resources('format_str.png')),
-                                                          ToolBarEnum.format_line_warp.value, self)
+        self.tool_action_format_line_warp = QtGui.QAction(
+            QtGui.QIcon(self.pu.get_path_from_resources('format_str.png')),
+            ToolBarEnum.format_line_warp.value, self)
         self.tool_bar.addAction(self.tool_action_format_line_warp)
 
         # self.tool_action_format_line_warp_display_width = QtGui.QAction(QtGui.QIcon("icons:format_str.png"),
         #                                                                 ToolBarEnum.format_line_warp_display_width.value,
         #                                                                 self)
-        self.tool_action_format_line_warp_display_width = QtGui.QAction(QtGui.QIcon(self.pu.get_path_from_resources('format_str.png')),
-                                                                        ToolBarEnum.format_line_warp_display_width.value,
-                                                                        self)
+        self.tool_action_format_line_warp_display_width = QtGui.QAction(
+            QtGui.QIcon(self.pu.get_path_from_resources('format_str.png')),
+            ToolBarEnum.format_line_warp_display_width.value,
+            self)
         self.tool_bar.addAction(self.tool_action_format_line_warp_display_width)
+
+        self.tool_action_format_line_warp_tab = QtGui.QAction(
+            QtGui.QIcon(self.pu.get_path_from_resources('format_str.png')),
+            ToolBarEnum.format_line_warp_tab.value,
+            self)
+        self.tool_bar.addAction(self.tool_action_format_line_warp_tab)
 
         self.status = self.statusBar()  # 创建一个状态栏,用于显示状态信息
 
@@ -186,6 +198,8 @@ class QMainElement(QtWidgets.QMainWindow):
         palette.setColor(QPalette.PlaceholderText, QColor('white'))  # 设置背景文字颜色为白色
         self.novel_edit_print.setPalette(palette)
 
+        self.novel_table_print = QtWidgets.QTableView()
+
         """
         dock widget
         """
@@ -226,6 +240,7 @@ class QMainElement(QtWidgets.QMainWindow):
         splitter = QtWidgets.QSplitter(QtCore.Qt.Orientation.Horizontal)
         splitter.addWidget(self.manual_file_item_list)
         splitter.addWidget(self.novel_edit_print)
+        # splitter.addWidget(self.novel_table_print)
         splitter.setSizes([130, self.width() - 130])
         layout_opt_format_novel = QtWidgets.QHBoxLayout(self.main_widget)
         layout_opt_format_novel.addWidget(splitter)
