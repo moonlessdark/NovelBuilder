@@ -195,3 +195,34 @@ class LineWrapV3:
             _new_line_str_list: list = _line_str_list.copy()
             _all_content += "".join(_new_line_str_list)
         return _all_content
+
+    @staticmethod
+    def add_newline_after_period_outside_quotes(text):
+        # 1. 找出所有在“”之间的内容，并记录它们的范围
+        quote_ranges = []
+        for match in re.finditer(r'“[^”]*?”', text):
+            quote_ranges.append(match.span())
+
+        # 2. 遍历所有句号的位置，并判断是否在“”之外
+        result = ''
+        prev_pos = 0
+        for period_match in re.finditer('。', text):
+            pos = period_match.start()
+
+            # 判断当前句号是否在任何“”范围内
+            inside_quotes = False
+            for start, end in quote_ranges:
+                if start < pos < end:
+                    inside_quotes = True
+                    break
+
+            # 如果句号不在“”中，则添加换行符
+            if not inside_quotes:
+                result += text[prev_pos:pos + 1] + '\n'
+            else:
+                result += text[prev_pos:pos + 1]
+            prev_pos = pos + 1
+
+        # 添加剩余部分
+        result += text[prev_pos:]
+        return result

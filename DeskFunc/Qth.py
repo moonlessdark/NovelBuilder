@@ -162,7 +162,8 @@ class ManualFormat(QThread):
                 """
                 排版
                 """
-                content: str = self.line_wrap.first_line_tab(self.content)
+                content: str = self.line_wrap.add_newline_after_period_outside_quotes(self.content)
+                content: str = self.line_wrap.first_line_tab(content)
         except Exception as e:
             # 打印异常信息
             self.sin_out_information.emit(str(e))
