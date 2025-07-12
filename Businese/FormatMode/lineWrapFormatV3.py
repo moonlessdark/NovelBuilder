@@ -176,6 +176,7 @@ class LineWrapV3:
         _all_content_list: list = []
         _is_passages: bool = False  # 默认是一段的话
         for x in content_list:
+            x = x.replace(" ", "")
             if x.find('\u3000') == 0:
                 if len(_line_str_list) != 0:
                     # 如果最新的一句话，找到的缩进符，且追加的数组中已经有内容了，说明上一句已经说完了。
