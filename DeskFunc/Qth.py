@@ -1,8 +1,7 @@
 from PySide6.QtCore import QThread, QWaitCondition, QMutex, Signal
 
 from Businese.FormatMode.ClearAdString import ClearAd
-from Businese.FormatMode.LineWrapFormat import LineWrap
-from Businese.FormatMode.lineWrapFormatV3 import LineWrapV3
+from Businese.FormatModeV2.lineWrapFormatV2 import LineWrapV3
 from Businese.FormatModeV2.utils import FormatStr
 from Utils.dataClass import ToolBarEnum
 from Utils.fileOpt import FileOpt
@@ -111,7 +110,6 @@ class ManualFormat(QThread):
     def run(self) -> None:
         content = ""
         self.mutex.lock()
-        import time
 
         try:
             self.sin_work_status_loading.emit(True)
@@ -141,7 +139,7 @@ class ManualFormat(QThread):
                 """
                 去除双引号中间的异常换行
                 """
-                content = self.line_wrap.plus_str_remove_spaces_between_quotes(self.content)
+                content = self.line_wrap.plus_str_remove_spaces_between_quotes_v2(self.content)
             elif self.format_mode == ToolBarEnum.clear_ad.value:
                 """
                 去除广告

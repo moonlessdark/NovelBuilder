@@ -128,6 +128,17 @@ class LineWrapV3:
             # print("____>>>>>>" + str("".join(newline)))
         return text
 
+    @staticmethod
+    def plus_str_remove_spaces_between_quotes_v2(text: str) -> str:
+        """
+        将 2句对话和 句号之前的对话换行
+        """
+        text_step_1: str = text.replace("”“", "”\n“")
+        text_step_2: str = text_step_1.replace("。“", "。\n“")
+        text_step_3: str = text_step_2.replace("。。。", "...")
+        text_step_4: str = text_step_3.replace("。。", "。")
+        return text_step_4
+
     def check_str_in_display_width(self, content: str) -> str:
         """
         按照屏幕显示宽度来判断要不是移除换行符
@@ -168,21 +179,35 @@ class LineWrapV3:
         :param content:
         :return:
         """
+        execute_type: int = 0
         if type(content) == str:
+            if "\u3000" in content:
+                execute_type = 1
             content: list = content.split("\n")
         content_list: list = list(filter(lambda num: num != "", content))
 
         _line_str_list: list = []
         _all_content_list: list = []
         _is_passages: bool = False  # 默认是一段的话
+
         for x in content_list:
-            if x.find('\u3000') == 0:
-                if len(_line_str_list) != 0:
-                    # 如果最新的一句话，找到的缩进符，且追加的数组中已经有内容了，说明上一句已经说完了。
-                    _line_str_list.append('\n')
-                    _ss_line_str: list = _line_str_list.copy()
-                    _all_content_list.append(_ss_line_str)
-                    _line_str_list.clear()
+            if execute_type == 1:
+                x = x.replace(" ", "")
+                if x.find('\u3000\u3000') == 0:
+                    if len(_line_str_list) != 0:
+                        # 如果最新的一句话，找到的缩进符，且追加的数组中已经有内容了，说明上一句已经说完了。
+                        _line_str_list.append('\n')
+                        _ss_line_str: list = _line_str_list.copy()
+                        _all_content_list.append(_ss_line_str)
+                        _line_str_list.clear()
+            elif execute_type == 0:
+                if x.find(' ') == 0:
+                    if len(_line_str_list) != 0:
+                        # 如果最新的一句话，找到的缩进符，且追加的数组中已经有内容了，说明上一句已经说完了。
+                        _line_str_list.append('\n')
+                        _ss_line_str: list = _line_str_list.copy()
+                        _all_content_list.append(_ss_line_str)
+                        _line_str_list.clear()
             _line_str_list.append(x)
         if len(_line_str_list) != 0:
             # 结束循环了，发现还有一段话没有录入，那么就加入一下
