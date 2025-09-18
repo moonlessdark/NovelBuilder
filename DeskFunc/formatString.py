@@ -24,8 +24,10 @@ class LineWrap:
             _temp_str = content_list[arr_index].strip()
             if _temp_str == "":
                 continue
-            elif '\u3000\u3000' not in _temp_str:
+            elif _temp_str.find('\u3000\u3000') != 0:
                 new_content_list.append('\u3000\u3000' + str(_temp_str) + '\n')
+            else:
+                new_content_list.append(str(_temp_str) + '\n')
         return "\n".join(new_content_list)
 
     @staticmethod
