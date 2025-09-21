@@ -77,7 +77,7 @@ class LineWrap:
         for _c in _content_list:
             if _c == "":
                 continue
-            _f_c: str = self.add_newline_after_period_outside_quotes(_c)
+            _f_c: str = self.add_newline_after_punctuation_outside_quotes(_c)
             _f_content_list.append(_f_c)
         return "\n".join(_f_content_list)
 
@@ -110,3 +110,39 @@ class LineWrap:
         # 添加剩余部分
         result += text[prev_pos:]
         return result
+
+    @staticmethod
+    def add_newline_after_punctuation_outside_quotes(text: str) -> str:
+        """
+        在指定标点（。！？；）后添加换行符，但跳过引号内的标点
+
+        参数:
+            text: 待处理文本字符串
+
+        返回:
+            处理后的文本字符串，非引号内标点后均有换行符
+
+        示例:
+            输入：'你好！这是"测试？文本"。结束；'
+            输出：'你好！\n这是"测试？文本"。\n结束；\n'
+        """
+        # 1. 定位所有中文引号区块
+        quote_blocks = [match.span() for match in re.finditer(r'“[^”]*?”', text)]
+
+        # 2. 处理四种标点符号
+        result = []
+        prev_pos = 0
+        for punct_match in re.finditer(r'[。！？；]', text):
+            pos = punct_match.start()
+            # 检查是否在引号范围内
+            in_quotes = any(start < pos < end for start, end in quote_blocks)
+
+            # 截取片段并决定是否换行
+            result.append(text[prev_pos:pos + 1])
+            if not in_quotes:
+                result.append('\n')
+            prev_pos = pos + 1
+
+        # 3. 添加剩余文本
+        result.append(text[prev_pos:])
+        return ''.join(result)
