@@ -56,10 +56,6 @@ def check_quotes_match(text: str) -> int:
     if len(quote_stack) > 2:
         # 如果连续出现3个嵌套的 “” 符号，那也太怪了，大概是又问题的。
         return quote_stack[0]
-    # if quote_stack:
-    #     # 提示第一个未闭合的“的位置 你TM这个怂卵
-    #     print(f'缺少匹配的 ” ，第一个未闭合的“位置：{quote_stack[0]}--{text[quote_stack[0]-10: quote_stack[0]+10]}')
-    #     return quote_stack[0]
     return -1
 
 
