@@ -176,7 +176,13 @@ def check_double_quotation_marks(content: str) -> int:
         if _x not in _first_str_index_list:
             _first_str_index_list.append(_x)
     _first_str_index_list.sort()
-    return _first_str_index_list[0]
+    if -1 in _first_str_index_list and len(_first_str_index_list) == 1:
+        # 完美，没有错误的双引号
+        return -1
+    else:
+        if -1 in _first_str_index_list:
+            _first_str_index_list.remove(-1)
+        return _first_str_index_list[0]
 
 
 # 示例用法
