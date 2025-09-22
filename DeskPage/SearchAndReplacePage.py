@@ -1,3 +1,5 @@
+import os
+
 from PySide6 import QtWidgets, QtGui
 from PySide6.QtGui import QCursor, QMouseEvent, Qt
 from PySide6.QtWidgets import QVBoxLayout, QListWidget
@@ -18,7 +20,10 @@ class SearchAndReplaceWidget(QtWidgets.QWidget):
 
         self.widget_is_show: bool = False
 
-        self.setFixedSize(260, 100)
+        if os.name == 'nt':
+            self.setFixedSize(270, 100)
+        else:
+            self.setFixedSize(260, 100)
 
         widget_select = QtWidgets.QWidget(self)
         self.manual_input_select_text = QtWidgets.QLineEdit(widget_select)
@@ -83,8 +88,9 @@ class SearchAndReplaceWidget(QtWidgets.QWidget):
             self.manual_input_select_text.setText(_s)
             self.manual_input_replace_text.setText(_r)
         else:
-            self.manual_input_select_text.setText(item)
-        return  True
+            self.manual_input_select_text.setText(select_str)
+        return True
+
 
 class SearchHistory(QtWidgets.QDialog):
     def __init__(self, parent=None):

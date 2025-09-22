@@ -94,10 +94,8 @@ class ConnectFunc(QMainElement):
                 raw_data = f.read()
                 result = chardet.detect(raw_data)
                 encoding = result['encoding']
-
             with open(self.local_file_path, 'r', encoding=encoding, errors='replace') as file:
                 content: str = file.read()
-                # check_quotes_match(content)
                 self.print_content(content)
         self.novel_edit_print.moveCursor(QtGui.QTextCursor.MoveOperation.Start)  # 光标移动到第一个位置
         _print_str: str = file_name.split("/")[-1]

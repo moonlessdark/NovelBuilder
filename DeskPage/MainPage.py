@@ -6,6 +6,19 @@ from PySide6.QtWidgets import QMessageBox
 from DeskPage.SearchAndReplacePage import SearchAndReplaceWidget, SearchHistory
 from Utils.ActionToolBarEnum import ToolBarEnum
 
+# 定义全角到半角的映射字典
+full_width_to_half_width = {
+    '！': '!', '＂': '"', '＃': '#', '＄': '$', '％': '%',
+    '＆': '&', '＇': "'", '（': '(', '）': ')', '＊': '*',
+    '＋': '+', '，': ',', '－': '-', '．': '.', '／': '/',
+    '０': '0', '１': '1', '２': '2', '３': '3', '４': '4',
+    '５': '5', '６': '6', '７': '7', '８': '8', '９': '9',
+    '：': ':', '；': ';', '＜': '<', '＝': '=', '＞': '>',
+    '？': '?', '＠': '@', '［': '[', '＼': '\\', '］': ']',
+    '＾': '^', '＿': '_', '｀': '`', '｛': '{', '｜': '|',
+    '｝': '}', '～': '~'
+}
+
 
 class QMainElement(QtWidgets.QMainWindow):
     def __init__(self):
@@ -111,6 +124,13 @@ class QMainElement(QtWidgets.QMainWindow):
         :param content:
         :return:
         """
+        def __full_to_half(text):
+            # 使用映射字典替换全角标点为半角标点
+            result = ''
+            for char in text:
+                result += full_width_to_half_width.get(char, char)
+            return result
+        content = __full_to_half(content)
         self.novel_edit_print.setPlainText(content)
 
     def get_content(self) -> str:
