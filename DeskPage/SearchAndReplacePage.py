@@ -3,7 +3,7 @@ from PySide6.QtGui import QCursor, QMouseEvent, Qt
 from PySide6.QtWidgets import QVBoxLayout, QListWidget
 
 
-item_split_char = " <替换为> "  # 搜索历史列表的分割字符
+item_split_char: str = " <替换为> "  # 搜索历史列表的分割字符
 
 
 class SearchAndReplaceWidget(QtWidgets.QWidget):
