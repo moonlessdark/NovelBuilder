@@ -54,6 +54,16 @@ class QMainElement(QtWidgets.QMainWindow):
         self.tool_action_change_zh_Traditional = QtGui.QAction(ToolBarEnum.change_lan.value, self)
         self.tool_bar.addAction(self.tool_action_change_zh_Traditional)
 
+        # 对话合并（繁体模式下可用）
+        self.tool_action_merge_stalk_str = QtGui.QAction(ToolBarEnum.merge_talk_str.value, self)
+        self.tool_action_merge_stalk_str.setToolTip('如果这一行没有说完，那么就将下一段合并进来。仅限繁体文本可用')
+        self.tool_bar.addAction(self.tool_action_merge_stalk_str)
+
+        # 拆分段落（繁体模式下可用）
+        self.tool_action_split_paragraphs = QtGui.QAction(ToolBarEnum.split_paragraphs.value, self)
+        self.tool_action_split_paragraphs.setToolTip('将双引号之外的句号都拆分为新的一段')
+        self.tool_bar.addAction(self.tool_action_split_paragraphs)
+
         # 检查对话符
         self.tool_action_check_stalk_str = QtGui.QAction(ToolBarEnum.check_talk_str.value, self)
         self.tool_action_check_stalk_str.setToolTip('检查文本中的错误 “ ” 符号')

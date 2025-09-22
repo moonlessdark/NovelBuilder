@@ -74,8 +74,7 @@ class ManualFormat(QThread):
                 排版
                 """
                 # content = process_text_outside_quotes(self.content)
-                content: str = LineWrap().newline_after_period_outside_quotes(self.content)
-                content: str = LineWrap().first_line_tab(content)
+                content: str = LineWrap().first_line_tab(self.content)
             elif self.format_mode == ToolBarEnum.check_talk_str.value:
                 """
                 检查对话
@@ -83,6 +82,17 @@ class ManualFormat(QThread):
                 _error_str_num: int = check_double_quotation_marks(self.content)
                 if _error_str_num == -1:
                     self.sin_out_information.emit("检测结束")
+            elif self.format_mode == ToolBarEnum.merge_talk_str.value:
+                """
+                对话合并
+                """
+                content: str = LineWrap().merge_period_outside_quotes(self.content)
+            elif self.format_mode == ToolBarEnum.split_paragraphs.value:
+                """
+                拆分段落
+                """
+                content: str = LineWrap().newline_after_period_outside_quotes(self.content)
+
         except Exception as e:
             # 打印异常信息
             self.sin_out_information.emit(str(e))

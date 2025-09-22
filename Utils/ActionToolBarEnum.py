@@ -12,7 +12,10 @@ class ToolBarEnum(Enum):
     change_lan = "繁简互换"
     type_setting = '排版'
     format_line_warp_tab = "非段落换行(缩进模式)"
-    check_talk_str = "对话检测"
+    check_talk_str = "对话检测(繁体)"
+    merge_talk_str = "对话合并(繁体)"
+    split_paragraphs = "拆分段落(繁体)"
+
     """
     菜单栏的文案
     """
