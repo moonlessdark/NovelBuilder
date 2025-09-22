@@ -1,6 +1,6 @@
 from PySide6.QtCore import QThread, QWaitCondition, QMutex, Signal
 
-from DeskFunc.ChapterPunctuation import check_quotes_match, process_text_outside_quotes
+from DeskFunc.ChapterPunctuation import check_double_quotation_marks, process_text_outside_quotes
 from DeskFunc.changeZhTraditional import change_zh_traditional
 from DeskFunc.formatString import LineWrap
 from Utils.ActionToolBarEnum import ToolBarEnum
@@ -80,7 +80,7 @@ class ManualFormat(QThread):
                 """
                 检查对话
                 """
-                _error_str_num: int = check_quotes_match(self.content)
+                _error_str_num: int = check_double_quotation_marks(self.content)
                 if _error_str_num == -1:
                     self.sin_out_information.emit("检测结束")
         except Exception as e:
