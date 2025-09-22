@@ -115,9 +115,14 @@ class SearchHistory(QtWidgets.QDialog):
         self.list_widget.clear()
         _item_list: list = []
         for item in search_items:
-            if item[-1] != "":
+            if item[0] == "":
+                # 查询没有值，没有保存的必要
+                continue
+            elif item[-1] != "":
+                # 查询和替换
                 str_line = item[0] + item_split_char + item[1]
             else:
+                # 纯查询
                 str_line = item[0]
             _item_list.append(str_line)
         self.list_widget.addItems(_item_list)  # 添加列表项
