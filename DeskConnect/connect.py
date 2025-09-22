@@ -101,4 +101,6 @@ class ConnectFunc(QMainElement):
                 self.print_content(content)
         self.novel_edit_print.moveCursor(QtGui.QTextCursor.MoveOperation.Start)  # 光标移动到第一个位置
         _print_str: str = file_name.split("/")[-1]
-        self.setWindowTitle(f"当前打开: {_print_str}")
+        if _print_str == "":
+            _print_str = "小说排版工具"
+        self.setWindowTitle(f"{_print_str}")
