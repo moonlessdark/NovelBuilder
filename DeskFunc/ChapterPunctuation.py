@@ -63,6 +63,125 @@ def check_quotes_match(text: str) -> int:
     return -1
 
 
+def check_the_last_character_is_dialogue_character(content: str):
+    """
+    这句话的最后一行，是个 : 符号，并且如果下一个字符是双引号中的开始符号，表示这句话还没有说完。
+    :param content:
+    :return:
+    """
+    if type(content) is str:
+        content: list = content.split("\n")
+
+    first_char_index: int = 0  # 下标
+
+    # 预先计算每行的长度（包括换行符）
+    line_lengths = [len(line) + 1 for line in content]
+
+    for line_index in range(len(content) - 1):
+        _index_content_line: str = content[line_index]
+        _next_content_line: str = content[line_index + 1]
+
+        # 检查当前行是否包含冒号且下一行以引号开头
+        if ':' in _index_content_line and _next_content_line.lstrip().startswith(('“', '”')):
+            return first_char_index
+
+        # 更新下一行首字符的索引位置
+        first_char_index += line_lengths[line_index]
+
+    return -1
+
+
+def check_first_str_is_double_quotation_marks(content: str):
+    """
+    检查是否存在双引号中没有内容
+    :param content:
+    :return:
+    """
+    for i, char in enumerate(content):
+        if char == '“”':
+            return i
+    return -1
+
+
+def check_double_quotation_marks_is_paired(content: str) -> int:
+    """
+    这一行文字里，开始和结束的双引号是否只有一个。
+    出现了开始符号就必须有结束符号。且开始符号和结束符号必须是成队的。
+    :param content:
+    :return:
+    """
+    if type(content) is str:
+        content: list = content.split("\n")
+
+    first_char_index: int = 0  # 下标
+
+    # 预先计算每行的长度（包括换行符）
+    line_lengths = [len(line) + 1 for line in content]
+
+    for line_index in range(len(content) - 1):
+        _index_content_line: str = content[line_index].strip()
+        _start_index_list: list = [i for i, x in enumerate(_index_content_line) if x == '“']
+        _end_index_list: list = [i for i, x in enumerate(_index_content_line) if x == '”']
+        # 检查当前行是否包含冒号且下一行以引号开头
+        if len(_start_index_list) != len(_end_index_list):
+            # 如果开始符号的数量和结束符号的数量不一致，表示肯定有问题
+            return first_char_index
+        else:
+            if not __validate_arrays(_start_index_list, _end_index_list):
+                # 如果开始符号的下一个字符不是结束符号，表示肯定有问题,以下数组满足条件
+                # [2, 5], [3, 7]
+                # [3, 5], [7, 9]
+                return first_char_index
+        # 更新下一行首字符的索引位置
+        first_char_index += line_lengths[line_index]
+    return -1
+
+
+def __validate_arrays(arr_a, arr_b) -> bool:
+    """
+    校验两个数组的元素关系：
+    1. 同下标下a数组元素必须小于b数组元素
+    2. 同一数组内元素必须严格递增
+    """
+    # 基础校验
+    if len(arr_a) != len(arr_b) or len(arr_a) < 2:
+        return False
+
+    # 校验数组内严格递增
+    def is_strictly_increasing(arr):
+        return all(x < y for x, y in zip(arr, arr[1:]))
+
+    # 校验跨数组关系和内部顺序
+    return (all(a < b for a, b in zip(arr_a, arr_b)) and
+            is_strictly_increasing(arr_a) and
+            is_strictly_increasing(arr_b))
+
+
+def check_double_quotation_marks(content: str) -> int:
+    """
+    检查文字中的双引号是否正常、是成对的
+    :param content:
+    :return:
+    """
+    _first_str_index_list: list = []
+
+    _first_str_index: int = check_quotes_match(content)
+    _first_str_index_list.append(_first_str_index)
+
+    if type(content) is str:
+        content: list = content.split("\n")
+
+    func_list = [check_the_last_character_is_dialogue_character,
+                 check_first_str_is_double_quotation_marks,
+                 check_double_quotation_marks_is_paired]
+
+    for func in func_list:
+        _x: int = func(content)
+        if _x not in _first_str_index_list:
+            _first_str_index_list.append(_x)
+    _first_str_index_list.sort()
+    return _first_str_index_list[0]
+
 
 # 示例用法
 if __name__ == '__main__':
