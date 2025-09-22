@@ -12,7 +12,7 @@ class QMainElement(QtWidgets.QMainWindow):
         super().__init__()
 
         self.setMinimumSize(800, 600)
-        self.setWindowTitle("小说文本格式化")
+        self.setWindowTitle("小说排版工具")
 
         self.tool_bar = self.addToolBar("tool_function")  # 创建一个工具栏，并设置工具栏的标题为"mytool"
         self.tool_bar.setIconSize(QtCore.QSize(20, 20))  # 设置图标大小
