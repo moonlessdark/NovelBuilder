@@ -78,7 +78,7 @@ def check_the_last_character_is_dialogue_character(content: str):
         _next_content_line: str = content[line_index + 1]
 
         # 检查当前行是否包含冒号且下一行以引号开头
-        if ':' in _index_content_line and _next_content_line.lstrip().startswith(('“', '”')):
+        if _index_content_line.rstrip().endswith(('：', ':')) and _next_content_line.lstrip().startswith(('“', '”')):
             return first_char_index
 
         # 更新下一行首字符的索引位置
