@@ -3,6 +3,9 @@ from PySide6.QtGui import QCursor, QMouseEvent, Qt
 from PySide6.QtWidgets import QVBoxLayout, QListWidget
 
 
+item_split_char = " <替换为> "  # 搜索历史列表的分割字符
+
+
 class SearchAndReplaceWidget(QtWidgets.QWidget):
     """
     查询和替换的小界面
@@ -15,7 +18,7 @@ class SearchAndReplaceWidget(QtWidgets.QWidget):
 
         self.widget_is_show: bool = False
 
-        self.setFixedSize(285, 100)
+        self.setFixedSize(260, 100)
 
         widget_select = QtWidgets.QWidget(self)
         self.manual_input_select_text = QtWidgets.QLineEdit(widget_select)
@@ -38,10 +41,12 @@ class SearchAndReplaceWidget(QtWidgets.QWidget):
         lay_out_select_replace_2.addWidget(self.manual_button_select_text)
         lay_out_select_replace_2.addWidget(self.manual_button_replace_text)
         lay_out_select_replace_2.addWidget(self.manual_button_replace_text_all)
+        lay_out_select_replace_2.setSpacing(2)
 
         lay_out_select_replace = QtWidgets.QVBoxLayout(widget_select)
         lay_out_select_replace.addLayout(lay_out_select_replace_1)
         lay_out_select_replace.addLayout(lay_out_select_replace_2)
+        lay_out_select_replace.setContentsMargins(5, 5, 5, 5)
 
         self.manual_button_history_input.clicked.connect(self.show_select_history)        
         self._history_list = SearchHistory(self)
@@ -69,17 +74,17 @@ class SearchAndReplaceWidget(QtWidgets.QWidget):
         """
         select_str: str = item.text()
         if select_str == "" or select_str is None:
-            return None
+            return False
 
         self.manual_input_select_text.clear()
         self.manual_input_replace_text.clear()
-        if "&&" in select_str:
-            _s, _r = select_str.split("&&")
+        if item_split_char in select_str:
+            _s, _r = select_str.split(item_split_char)
             self.manual_input_select_text.setText(_s)
             self.manual_input_replace_text.setText(_r)
         else:
             self.manual_input_select_text.setText(item)
-
+        return  True
 
 class SearchHistory(QtWidgets.QDialog):
     def __init__(self, parent=None):
@@ -111,7 +116,7 @@ class SearchHistory(QtWidgets.QDialog):
         _item_list: list = []
         for item in search_items:
             if item[-1] != "":
-                str_line = "&&".join(item)
+                str_line = item[0] + item_split_char + item[1]
             else:
                 str_line = item[0]
             _item_list.append(str_line)
