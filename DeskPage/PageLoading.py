@@ -1,7 +1,7 @@
 from PySide6.QtSvgWidgets import QGraphicsSvgItem
 from PySide6.QtWidgets import QApplication, QGraphicsView, QGraphicsScene
 from PySide6.QtCore import QPropertyAnimation, Property, QTimer, QEasingCurve, Qt
-from PySide6.QtGui import QColor
+from PySide6.QtGui import QColor, QPainter
 
 
 class TransparentLoadingView(QGraphicsView):
@@ -25,6 +25,12 @@ class TransparentLoadingView(QGraphicsView):
 
         # 延迟加载确保渲染完成
         QTimer.singleShot(100, self.init_animation)
+        # self.setViewportUpdateMode(QGraphicsView.ViewportUpdateMode.FullViewportUpdate)
+        self.setRenderHints(QPainter.RenderHint.SmoothPixmapTransform)
+        # 如果FullViewportUpdate性能不够理想，可以尝试以下替代方案
+        # self.setViewportUpdateMode(QGraphicsView.ViewportUpdateMode.BoundingRectViewportUpdate)
+        # 或者
+        self.setViewportUpdateMode(QGraphicsView.ViewportUpdateMode.SmartViewportUpdate)
 
     def init_animation(self):
         # 加载SVG并设置居中
@@ -53,6 +59,8 @@ class TransparentLoadingView(QGraphicsView):
     def angle(self, value):
         self._angle = value
         self.svg_item.setRotation(value)
+        # 强制刷新视口以避免残影
+        self.viewport().update()
 
 
 if __name__ == "__main__":
