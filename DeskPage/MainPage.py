@@ -157,6 +157,7 @@ class QMainElement(QtWidgets.QMainWindow):
             for char in text:
                 result += full_width_to_half_width.get(char, char)
             return result
+        self.novel_edit_print.clear()
         content = __full_to_half(content)
         self.novel_edit_print.setPlainText(content)
 
