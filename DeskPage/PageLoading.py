@@ -5,13 +5,14 @@ from PySide6.QtGui import QColor, QPainter
 
 
 class TransparentLoadingView(QGraphicsView):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
         self.anim = None
         self.svg_item = None
         self._angle = None
         self.setWindowTitle("Transparent Loading")
-        self.resize(300, 300)
+
+        # self.resize(780, 590)
 
         # 设置透明窗口属性
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)

@@ -1,8 +1,9 @@
 from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtCore import QPoint
 from PySide6.QtGui import QPalette, QColor, QShortcut, QKeySequence
-from PySide6.QtWidgets import QMessageBox
+from PySide6.QtWidgets import QMessageBox, QGraphicsScene
 
+from DeskPage.PageLoading import TransparentLoadingView
 from DeskPage.SearchAndReplacePage import SearchAndReplaceWidget, SearchHistory
 from Utils.ActionToolBarEnum import ToolBarEnum
 
@@ -120,6 +121,9 @@ class QMainElement(QtWidgets.QMainWindow):
         """
         self.shortcut_search = QShortcut(QKeySequence("Ctrl+F"), self)
         self.shortcut_search.activated.connect(self.show_search)
+
+        self._loading_view = TransparentLoadingView(_widget_content)
+
 
     def show_search(self):
         """
@@ -262,3 +266,10 @@ class QMainElement(QtWidgets.QMainWindow):
         _format_str = QtGui.QTextCharFormat()
         _format_str.setForeground(QtCore.Qt.GlobalColor.yellow)
         cursor.setCharFormat(_format_str)
+
+    def resizeEvent(self, event):
+        # 获取窗口新尺寸并重新更新loading窗口大小
+        new_size = event.size()
+        # print(f"宽度: {new_size.width()}, 高度: {new_size.height()}")
+        self._loading_view.show()
+        self._loading_view.resize(new_size)
