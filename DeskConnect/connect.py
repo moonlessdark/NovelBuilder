@@ -4,7 +4,6 @@ import chardet
 from PySide6 import QtGui
 from PySide6.QtWidgets import QFileDialog
 
-from DeskFunc.ChapterPunctuation import check_quotes_match
 from DeskPage.MainPage import QMainElement
 from DeskConnect.func_qth import ManualFormat
 from Utils.ActionToolBarEnum import ToolBarEnum
@@ -20,6 +19,7 @@ class ConnectFunc(QMainElement):
         self.qth_format.sin_out.connect(self.print_content)  # 打印处理后的内容
         self.tool_bar.actionTriggered[QtGui.QAction].connect(self.tool_bar_func)
         self.qth_format.sin_out_select_error_str.connect(self.highlight_text)
+        self.qth_format.sin_work_status_loading.connect(self.show_loading)  # 是否显示loading效果
 
         # 打开本地文件时的路径
         self.local_file_path: str = ""

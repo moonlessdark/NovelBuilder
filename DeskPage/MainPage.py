@@ -123,7 +123,7 @@ class QMainElement(QtWidgets.QMainWindow):
         self.shortcut_search.activated.connect(self.show_search)
 
         self._loading_view = TransparentLoadingView(_widget_content)
-
+        self.show_loading(False)  # loading窗口默认不显示
 
     def show_search(self):
         """
@@ -131,6 +131,16 @@ class QMainElement(QtWidgets.QMainWindow):
         :return:
         """
         self.dock.setVisible(True)
+
+    def show_loading(self, is_show: bool):
+        """
+        显示加载窗口
+        :return:
+        """
+        if is_show:
+            self._loading_view.show()
+        else:
+            self._loading_view.hide()
 
     def print_content(self, content: str):
         """
@@ -271,5 +281,4 @@ class QMainElement(QtWidgets.QMainWindow):
         # 获取窗口新尺寸并重新更新loading窗口大小
         new_size = event.size()
         # print(f"宽度: {new_size.width()}, 高度: {new_size.height()}")
-        self._loading_view.show()
         self._loading_view.resize(new_size)
