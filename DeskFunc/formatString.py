@@ -75,6 +75,8 @@ class LineWrap:
         :param text:
         :return:
         """
+
+        text = self.split_into_paragraphs(text)
         _content_list: list = text.split("\n")
         _f_content_list: list = []
         for _c in _content_list:
@@ -83,6 +85,14 @@ class LineWrap:
             _f_c: str = self.add_newline_after_punctuation_outside_quotes(_c)
             _f_content_list.append(_f_c)
         return "\n".join(_f_content_list)
+
+    @staticmethod
+    def split_into_paragraphs(text: str) -> str:
+        """
+        将2个双引号之间的内容拆分一下
+        """
+        paragraphs = text.replace('」「', '」\n「')
+        return paragraphs
 
     @staticmethod
     def merge_period_outside_quotes(text_list: str):
