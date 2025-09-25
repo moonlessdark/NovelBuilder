@@ -122,6 +122,9 @@ class QMainElement(QtWidgets.QMainWindow):
         self.shortcut_search = QShortcut(QKeySequence("Ctrl+F"), self)
         self.shortcut_search.activated.connect(self.show_search)
 
+        """
+        加载中效果
+        """
         self._loading_view = TransparentLoadingView(_widget_content)
         self.show_loading(False)  # loading窗口默认不显示
 
@@ -134,7 +137,7 @@ class QMainElement(QtWidgets.QMainWindow):
 
     def show_loading(self, is_show: bool):
         """
-        显示加载窗口
+        显示加载中窗口
         :return:
         """
         if is_show:
