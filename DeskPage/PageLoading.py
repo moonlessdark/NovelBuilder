@@ -1,3 +1,5 @@
+import os.path
+
 from PySide6.QtSvgWidgets import QGraphicsSvgItem
 from PySide6.QtWidgets import QApplication, QGraphicsView, QGraphicsScene
 from PySide6.QtCore import QPropertyAnimation, Property, QTimer, QEasingCurve, Qt
@@ -35,7 +37,11 @@ class TransparentLoadingView(QGraphicsView):
 
     def init_animation(self):
         # 加载SVG并设置居中
-        self.svg_item = QGraphicsSvgItem("/Users/luojun/Downloads/loading.svg")
+
+        _loading_file_path = "./_internal/Resources/Images/loading.svg"
+        if not os.path.exists(_loading_file_path):
+            _loading_file_path = "./Resources/Images/loading.svg"
+        self.svg_item = QGraphicsSvgItem(_loading_file_path)
         rect = self.svg_item.boundingRect()
         self.svg_item.setTransformOriginPoint(rect.width() / 2, rect.height() / 2)
         self.scene.addItem(self.svg_item)

@@ -55,6 +55,9 @@ class QMainElement(QtWidgets.QMainWindow):
         self.tool_action_change_zh_Traditional = QtGui.QAction(ToolBarEnum.change_lan.value, self)
         self.tool_bar.addAction(self.tool_action_change_zh_Traditional)
 
+        # 分割线
+        self.tool_bar.addSeparator()
+
         # 对话合并（繁体模式下可用）
         self.tool_action_merge_stalk_str = QtGui.QAction(ToolBarEnum.merge_talk_str.value, self)
         self.tool_action_merge_stalk_str.setToolTip('如果这一行没有说完，那么就将下一段合并进来。仅限繁体文本可用')
@@ -70,13 +73,16 @@ class QMainElement(QtWidgets.QMainWindow):
         self.tool_action_check_stalk_str.setToolTip('检查文本中的错误 “ ” 符号')
         self.tool_bar.addAction(self.tool_action_check_stalk_str)
 
+        # 分割线
+        self.tool_bar.addSeparator()
+        # 格式化(首行缩进模式)
+        self.tool_action_format_line_warp_tab = QtGui.QAction(ToolBarEnum.format_line_warp_tab.value, self)
+        self.tool_bar.addAction(self.tool_action_format_line_warp_tab)
+
         # 重新排版
         self.tool_action_type_setting = QtGui.QAction(ToolBarEnum.type_setting.value, self)
         self.tool_bar.addAction(self.tool_action_type_setting)
 
-        # 格式化(首行缩进模式)
-        self.tool_action_format_line_warp_tab = QtGui.QAction(ToolBarEnum.format_line_warp_tab.value, self)
-        self.tool_bar.addAction(self.tool_action_format_line_warp_tab)
 
         """
         内容展示区
