@@ -1,7 +1,7 @@
 from PySide6.QtCore import QThread, QWaitCondition, QMutex, Signal
 
-from DeskFunc.ChapterPunctuation import check_double_quotation_marks, process_text_outside_quotes
-from DeskFunc.changeZhTraditional import change_zh_traditional
+from DeskFunc.ChapterPunctuation import check_double_quotation_marks
+from DeskFunc.changeZhTraditional import change_zh_traditional, full_width_to_half_width
 from DeskFunc.formatString import LineWrap
 from Utils.ActionToolBarEnum import ToolBarEnum
 
@@ -73,8 +73,8 @@ class ManualFormat(QThread):
                 """
                 排版
                 """
-                # content = process_text_outside_quotes(self.content)
-                content: str = LineWrap().first_line_tab(self.content)
+                content = full_width_to_half_width(self.content)
+                content: str = LineWrap().first_line_tab(content)
             elif self.format_mode == ToolBarEnum.check_talk_str.value:
                 """
                 检查对话

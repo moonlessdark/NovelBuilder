@@ -169,9 +169,9 @@ class LineWrap:
         # 2. 处理四种标点符号
         result = []
         prev_pos = 0
-        for punt_match in re.finditer(r'[。！？；]', text):
+        for punt_match in re.finditer(r'[。！？；;]', text):
             pos = punt_match.start()
-            # 检查是否在引号范围内
+            # 检查是否在引号范围内pip install unidecode
             in_quotes = any(start < pos < end for start, end in quote_blocks)
 
             # 截取片段并决定是否换行

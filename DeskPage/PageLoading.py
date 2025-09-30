@@ -1,4 +1,4 @@
-import os.path
+import os
 
 from PySide6.QtSvgWidgets import QGraphicsSvgItem
 from PySide6.QtWidgets import QApplication, QGraphicsView, QGraphicsScene
