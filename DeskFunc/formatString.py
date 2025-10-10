@@ -183,3 +183,18 @@ class LineWrap:
         # 3. 添加剩余文本
         result.append(text[prev_pos:])
         return ''.join(result)
+
+    @staticmethod
+    def talk_str_en_to_zw(content: str):
+        """
+        英文的 “” 转为 「 」
+        """
+        result = []
+        replace_next = True  # 标记是否应替换为左括号
+        for char in content:
+            if char == '"':
+                result.append('「' if replace_next else '」')
+                replace_next = not replace_next  # 切换标记状态
+            else:
+                result.append(char)
+        return ''.join(result)

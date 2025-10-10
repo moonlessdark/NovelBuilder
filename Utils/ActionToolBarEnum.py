@@ -10,6 +10,7 @@ class ToolBarEnum(Enum):
     save_file = "保存"
     search_replace = "查询/替换(Ctrl+F)"
     change_lan = "繁简互换"
+    talk_str_change = "对话符转换(英转繁)"
     type_setting = '排版'
     format_line_warp_tab = "非段落换行(缩进模式)"
     check_talk_str = "对话检测(繁体)"

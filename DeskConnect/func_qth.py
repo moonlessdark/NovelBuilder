@@ -92,6 +92,12 @@ class ManualFormat(QThread):
                 拆分段落
                 """
                 content: str = LineWrap().newline_after_period_outside_quotes(self.content)
+            elif self.format_mode == ToolBarEnum.talk_str_change.value:
+                """
+                对话符转换,英语转繁体。
+                只有内容中没有 中文的 “”，只有英文的 ""，才进行转换
+                """
+                content: str = LineWrap().talk_str_en_to_zw(self.content)
 
         except Exception as e:
             # 打印异常信息

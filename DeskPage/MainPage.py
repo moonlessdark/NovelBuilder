@@ -42,6 +42,10 @@ class QMainElement(QtWidgets.QMainWindow):
         self.tool_action_change_zh_Traditional = QtGui.QAction(ToolBarEnum.change_lan.value, self)
         self.tool_bar.addAction(self.tool_action_change_zh_Traditional)
 
+        # 对话符号由英文转为繁体
+        self.tool_action_change_en_to_zw = QtGui.QAction(ToolBarEnum.talk_str_change.value, self)
+        self.tool_bar.addAction(self.tool_action_change_en_to_zw)
+
         # 分割线
         self.tool_bar.addSeparator()
 
