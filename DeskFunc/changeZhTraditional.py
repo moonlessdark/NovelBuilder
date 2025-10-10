@@ -16,7 +16,7 @@ def full_width_to_half_width(text: str) -> str:
     result = []
 
     text = full_to_half(text)
-
+    text = en_to_cn(text)
     for char in text:
         code = ord(char)
         # 全角字母A-Z转换（0xFF21-0xFF3A）
@@ -49,4 +49,19 @@ def full_to_half(text) -> str:
     result = ''
     for char in text:
         result += full_width_to_half_width_dict.get(char, char)
+    return result
+
+
+# 英文字符转中文
+_en_str_to_cn_str: dict = {
+    ':': ': ',
+    ',': '，'
+}
+
+
+def en_to_cn(text) -> str:
+    # 使用映射字典替换全角标点为半角标点
+    result = ''
+    for char in text:
+        result += _en_str_to_cn_str.get(char, char)
     return result
