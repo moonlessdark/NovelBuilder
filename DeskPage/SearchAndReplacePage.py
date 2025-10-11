@@ -2,7 +2,7 @@ import os
 
 from PySide6 import QtWidgets, QtGui
 from PySide6.QtGui import QCursor, QMouseEvent, Qt
-from PySide6.QtWidgets import QVBoxLayout, QListWidget
+from PySide6.QtWidgets import QVBoxLayout, QListWidget, QSizePolicy
 
 from DeskPage.FindList import ListWidgetWithMenu
 
@@ -19,24 +19,13 @@ class SearchAndReplaceWidget(QtWidgets.QWidget):
         self._history_list = None
         self._items: list = []
 
-        self.widget_is_show: bool = False
-
-        if os.name == 'nt':
-            # self.setFixedSize(270, 100)
-            self.setFixedWidth(270)
-        else:
-            # self.setFixedSize(260, 100)
-            self.setFixedWidth(275)
-
-
-        widget_select = QtWidgets.QWidget(self)
-        self.manual_input_select_text = QtWidgets.QLineEdit(widget_select)
+        self.manual_input_select_text = QtWidgets.QLineEdit()
         self.manual_input_select_text.setPlaceholderText("请输入需要查询的内容")
-        self.manual_input_replace_text = QtWidgets.QLineEdit(widget_select)
+        self.manual_input_replace_text = QtWidgets.QLineEdit()
         self.manual_input_replace_text.setPlaceholderText("请输入需要替换的内容")
-        self.manual_button_select_text = QtWidgets.QPushButton("查询", widget_select)
-        self.manual_button_replace_text = QtWidgets.QPushButton("替换", widget_select)
-        self.manual_button_replace_text_all = QtWidgets.QPushButton("替换全部", widget_select)
+        self.manual_button_select_text = QtWidgets.QPushButton("查询")
+        self.manual_button_replace_text = QtWidgets.QPushButton("替换")
+        self.manual_button_replace_text_all = QtWidgets.QPushButton("替换全部")
 
         self.manual_button_history_input = QtWidgets.QPushButton()
         self.manual_button_history_input.setIcon(QtGui.QIcon.fromTheme("document-open-recent"))  # 尝试使用主题图标
@@ -44,24 +33,32 @@ class SearchAndReplaceWidget(QtWidgets.QWidget):
         lay_out_select_replace_1 = QtWidgets.QVBoxLayout()
         lay_out_select_replace_1.addWidget(self.manual_input_select_text)
         lay_out_select_replace_1.addWidget(self.manual_input_replace_text)
+        lay_out_select_replace_1.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
         lay_out_select_replace_2 = QtWidgets.QHBoxLayout()
         lay_out_select_replace_2.addWidget(self.manual_button_history_input)
         lay_out_select_replace_2.addWidget(self.manual_button_select_text)
         lay_out_select_replace_2.addWidget(self.manual_button_replace_text)
         lay_out_select_replace_2.addWidget(self.manual_button_replace_text_all)
+        lay_out_select_replace_2.setAlignment(Qt.AlignmentFlag.AlignLeft)
         lay_out_select_replace_2.setSpacing(2)
 
-        lay_out_select_replace = QtWidgets.QVBoxLayout(widget_select)
+        self.manual_button_history_input.clicked.connect(self.show_select_history)
+
+        self._history_list = SearchHistory()
+        self._history_list.list_widget.itemClicked.connect(self.input_item_to_search_and_replace)
+
+        self._history_list_is_show: bool = False
+
+        # 主界面布局
+        lay_out_select_replace = QtWidgets.QVBoxLayout(self)
         lay_out_select_replace.addLayout(lay_out_select_replace_1)
         lay_out_select_replace.addLayout(lay_out_select_replace_2)
-        lay_out_select_replace.setContentsMargins(5, 5, 5, 5)
-
-        self.manual_button_history_input.clicked.connect(self.show_select_history)        
-        self._history_list = SearchHistory(self)
-        self._history_list.list_widget.itemClicked.connect(self.input_item_to_search_and_replace)
         lay_out_select_replace.addWidget(self._history_list)
-        self.find_list_show: bool = False
+        # lay_out_select_replace.setContentsMargins(5, 5, 5, 5)
+        lay_out_select_replace.setAlignment(Qt.AlignmentFlag.AlignTop)
+
+        self._history_list.hide()
 
     def show_select_history(self):
         """
@@ -69,12 +66,16 @@ class SearchAndReplaceWidget(QtWidgets.QWidget):
         :return: 
         """
         self._history_list.update_search_history(self._items)
-        if not self.find_list_show:
-            self.setFixedHeight(320)
-            self.find_list_show = True
+        if not self._history_list_is_show:
+            self._history_list.show()
+            self._history_list_is_show = True
+            self.setMinimumHeight(300)
         else:
-            self.setFixedHeight(100)
-            self.find_list_show = False
+            self._history_list.hide()
+            self._history_list_is_show = False
+            self.setMinimumHeight(100)
+        self.adjustSize()
+        # self.setMinimumSize(self.minimumSizeHint())
 
     def update_search_history_items(self, items):
         # print(f"_items：{self._items}，item:{items}")
@@ -109,12 +110,10 @@ class SearchHistory(QtWidgets.QDialog):
 
         self._search_list: list = []
 
-        self.setWindowTitle("查询历史")
-
         layout = QVBoxLayout()
         self.list_widget = ListWidgetWithMenu(self)
         layout.addWidget(self.list_widget)
-        layout.setContentsMargins(5, 5, 5, 5)
+        layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(layout)
 
         self.adjustSize()
