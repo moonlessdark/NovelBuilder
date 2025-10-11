@@ -19,11 +19,11 @@ class QMainElement(QtWidgets.QMainWindow):
         self.tool_bar = self.addToolBar("tool_function")  # 创建一个工具栏，并设置工具栏的标题为"mytool"
         self.tool_bar.setIconSize(QtCore.QSize(20, 20))  # 设置图标大小
         self.tool_bar.setToolButtonStyle(QtGui.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)  # 设置工具栏的按钮样式为文本在图标左侧
+        self.tool_bar.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonIconOnly)  # 当有图标时只显示图标
 
         # 打开文件
         self.tool_action_open_file = QtGui.QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_DirOpenIcon), ToolBarEnum.open_file.value, self)
         self.tool_bar.addAction(self.tool_action_open_file)  # 将QAction对象添加到工具栏中
-
         # 保存文件
         self.tool_action_save_file = QtGui.QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_DialogSaveButton), ToolBarEnum.save_file.value, self)
         self.tool_bar.addAction(self.tool_action_save_file)
@@ -32,7 +32,7 @@ class QMainElement(QtWidgets.QMainWindow):
         self.tool_bar.addSeparator()
 
         # 查询/替换
-        self.tool_action_search_replace = QtGui.QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_DialogApplyButton), ToolBarEnum.search_replace.value, self)
+        self.tool_action_search_replace = QtGui.QAction(ToolBarEnum.search_replace.value, self)
         self.tool_bar.addAction(self.tool_action_search_replace)
         self.tool_action_search_replace.triggered.connect(self.show_search)
 
