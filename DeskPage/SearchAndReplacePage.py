@@ -2,7 +2,7 @@ import os
 
 from PySide6 import QtWidgets, QtGui
 from PySide6.QtGui import QCursor, QMouseEvent, Qt
-from PySide6.QtWidgets import QVBoxLayout, QListWidget
+from PySide6.QtWidgets import QVBoxLayout, QListWidget, QDockWidget
 
 from DeskPage.FindList import ListWidgetWithMenu
 
@@ -72,6 +72,7 @@ class SearchAndReplaceWidget(QtWidgets.QWidget):
         if not self.find_list_show:
             self.setFixedHeight(320)
             self.find_list_show = True
+
         else:
             self.setFixedHeight(100)
             self.find_list_show = False
@@ -100,7 +101,6 @@ class SearchAndReplaceWidget(QtWidgets.QWidget):
         else:
             self.manual_input_select_text.setText(select_str)
         return True
-
 
 class SearchHistory(QtWidgets.QDialog):
     def __init__(self, parent=None):
