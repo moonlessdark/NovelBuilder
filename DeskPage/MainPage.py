@@ -32,7 +32,7 @@ class QMainElement(QtWidgets.QMainWindow):
         self.tool_bar.addSeparator()
 
         # 查询/替换
-        self.tool_action_search_replace = QtGui.QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_DialogApplyButton), ToolBarEnum.search_replace.value, self)
+        self.tool_action_search_replace = QtGui.QAction(ToolBarEnum.search_replace.value, self)
         self.tool_bar.addAction(self.tool_action_search_replace)
         self.tool_action_search_replace.triggered.connect(self.show_search)
 

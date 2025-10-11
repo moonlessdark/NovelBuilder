@@ -8,7 +8,7 @@ class ToolBarEnum(Enum):
     """
     open_file = "打开"
     save_file = "保存"
-    search_replace = "查询/替换(Ctrl+F)"
+    search_replace = "查询替换"
     change_lan = "繁简互换"
     talk_str_change = "对话符转换(英转繁)"
     type_setting = '排版'
