@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QMessageBox, QGraphicsScene, QStyle
 
 from DeskPage.PageLoading import TransparentLoadingView
 from DeskPage.ReQPlainTextEdit import ZoomableTextEdit
-from DeskPage.SearchAndReplacePage import SearchAndReplaceWidget, SearchHistory
+from DeskPage.SearchAndReplacePage import SearchAndReplaceWidget
 from Utils.ActionToolBarEnum import ToolBarEnum
 
 

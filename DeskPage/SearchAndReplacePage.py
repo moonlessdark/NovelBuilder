@@ -22,9 +22,12 @@ class SearchAndReplaceWidget(QtWidgets.QWidget):
         self.widget_is_show: bool = False
 
         if os.name == 'nt':
-            self.setFixedSize(270, 100)
+            # self.setFixedSize(270, 100)
+            self.setFixedWidth(270)
         else:
-            self.setFixedSize(260, 100)
+            # self.setFixedSize(260, 100)
+            self.setFixedWidth(275)
+
 
         widget_select = QtWidgets.QWidget(self)
         self.manual_input_select_text = QtWidgets.QLineEdit(widget_select)
@@ -57,6 +60,8 @@ class SearchAndReplaceWidget(QtWidgets.QWidget):
         self.manual_button_history_input.clicked.connect(self.show_select_history)        
         self._history_list = SearchHistory(self)
         self._history_list.list_widget.itemClicked.connect(self.input_item_to_search_and_replace)
+        lay_out_select_replace.addWidget(self._history_list)
+        self.find_list_show: bool = False
 
     def show_select_history(self):
         """
@@ -64,8 +69,12 @@ class SearchAndReplaceWidget(QtWidgets.QWidget):
         :return: 
         """
         self._history_list.update_search_history(self._items)
-        if self._history_list.isVisible() is False:
-            self._history_list.show()
+        if not self.find_list_show:
+            self.setFixedHeight(320)
+            self.find_list_show = True
+        else:
+            self.setFixedHeight(100)
+            self.find_list_show = False
 
     def update_search_history_items(self, items):
         # print(f"_items：{self._items}，item:{items}")
@@ -96,6 +105,7 @@ class SearchAndReplaceWidget(QtWidgets.QWidget):
 class SearchHistory(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.FramelessWindowHint)
 
         self._search_list: list = []
 
@@ -133,6 +143,7 @@ class SearchHistory(QtWidgets.QDialog):
                 str_line = item[0]
             _item_list.append(str_line)
         self.list_widget.addItems(_item_list)  # 添加列表项
+        return None
 
     def mouseMoveEvent(self, event: QMouseEvent):
         # 获取鼠标位置并更新widget位置
