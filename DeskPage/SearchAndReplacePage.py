@@ -4,6 +4,7 @@ from PySide6 import QtWidgets, QtGui
 from PySide6.QtGui import QCursor, QMouseEvent, Qt
 from PySide6.QtWidgets import QVBoxLayout, QListWidget
 
+from DeskPage.FindList import ListWidgetWithMenu
 
 item_split_char: str = " <替换为> "  # 搜索历史列表的分割字符
 
@@ -101,7 +102,7 @@ class SearchHistory(QtWidgets.QDialog):
         self.setWindowTitle("查询历史")
 
         layout = QVBoxLayout()
-        self.list_widget = QListWidget(self)
+        self.list_widget = ListWidgetWithMenu(self)
         layout.addWidget(self.list_widget)
         layout.setContentsMargins(5, 5, 5, 5)
         self.setLayout(layout)
