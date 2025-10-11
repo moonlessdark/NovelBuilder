@@ -1,9 +1,10 @@
 from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtCore import QPoint
 from PySide6.QtGui import QPalette, QColor, QShortcut, QKeySequence
-from PySide6.QtWidgets import QMessageBox, QGraphicsScene
+from PySide6.QtWidgets import QMessageBox, QGraphicsScene, QStyle
 
 from DeskPage.PageLoading import TransparentLoadingView
+from DeskPage.ReQPlainTextEdit import ZoomableTextEdit
 from DeskPage.SearchAndReplacePage import SearchAndReplaceWidget, SearchHistory
 from Utils.ActionToolBarEnum import ToolBarEnum
 
@@ -20,18 +21,18 @@ class QMainElement(QtWidgets.QMainWindow):
         self.tool_bar.setToolButtonStyle(QtGui.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)  # 设置工具栏的按钮样式为文本在图标左侧
 
         # 打开文件
-        self.tool_action_open_file = QtGui.QAction(ToolBarEnum.open_file.value, self)
+        self.tool_action_open_file = QtGui.QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_DirOpenIcon), ToolBarEnum.open_file.value, self)
         self.tool_bar.addAction(self.tool_action_open_file)  # 将QAction对象添加到工具栏中
 
         # 保存文件
-        self.tool_action_save_file = QtGui.QAction(ToolBarEnum.save_file.value, self)
+        self.tool_action_save_file = QtGui.QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_DialogSaveButton), ToolBarEnum.save_file.value, self)
         self.tool_bar.addAction(self.tool_action_save_file)
 
         # 分割线
         self.tool_bar.addSeparator()
 
         # 查询/替换
-        self.tool_action_search_replace = QtGui.QAction(ToolBarEnum.search_replace.value, self)
+        self.tool_action_search_replace = QtGui.QAction(self.style().standardIcon(QStyle.StandardPixmap.SP_DialogApplyButton), ToolBarEnum.search_replace.value, self)
         self.tool_bar.addAction(self.tool_action_search_replace)
         self.tool_action_search_replace.triggered.connect(self.show_search)
 
@@ -79,7 +80,7 @@ class QMainElement(QtWidgets.QMainWindow):
         内容展示区
         """
         _widget_content = QtWidgets.QWidget(self)
-        self.novel_edit_print = QtWidgets.QPlainTextEdit(self)
+        self.novel_edit_print = ZoomableTextEdit(self)
         self.novel_edit_print.setPlaceholderText("等待加载小说内容")
         self.novel_edit_print.setLineWrapMode(QtWidgets.QPlainTextEdit.LineWrapMode.NoWrap)
 
