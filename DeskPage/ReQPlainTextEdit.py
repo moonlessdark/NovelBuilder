@@ -6,7 +6,7 @@ from PySide6.QtCore import Qt, QPropertyAnimation, QEasingCurve
 class ZoomableTextEdit(QPlainTextEdit):
     MIN_FONT_SIZE = 8
     MAX_FONT_SIZE = 72
-    ZOOM_STEP = 1
+    ZOOM_STEP = 4
 
     def __init__(self, parent=None):
         super().__init__(parent)

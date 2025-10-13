@@ -75,7 +75,6 @@ class QMainElement(QtWidgets.QMainWindow):
         self.tool_action_type_setting = QtGui.QAction(ToolBarEnum.type_setting.value, self)
         self.tool_bar.addAction(self.tool_action_type_setting)
 
-
         """
         内容展示区
         """
@@ -98,6 +97,7 @@ class QMainElement(QtWidgets.QMainWindow):
         _lay_out_main_gui = QtWidgets.QVBoxLayout(_widget_content)
         _lay_out_main_gui.addWidget(self.novel_edit_print)
         _lay_out_main_gui.setContentsMargins(5, 5, 5, 5)
+
         """
         查询、替换小窗口
         """
