@@ -63,7 +63,7 @@ class ManualFormat(QThread):
                 """
                 异常换行：缩进模式
                 """
-                content = LineWrap().check_str_in_display_width(self.content)
+                content = LineWrap().check_str_in_display_width_func_new(self.content)
             elif self.format_mode == ToolBarEnum.change_lan.value:
                 """
                 繁简互换

@@ -186,9 +186,3 @@ def check_double_quotation_marks(content: str) -> int:
         if -1 in _first_str_index_list:
             _first_str_index_list.remove(-1)
         return _first_str_index_list[0]
-
-
-# 示例用法
-if __name__ == '__main__':
-    content: str = '这是一个。「测「试」」。用来。查找「引。「号」的位置。」。知。道。吗。'
-

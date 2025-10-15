@@ -9,11 +9,11 @@ class LineWrap:
     """
 
     def __init__(self):
-        self.__warp_tag_left: list = ['。', '！', '!', "…", "？", '?', '；', ';']  # 左侧碰到这些字符，就可以正常换行了
+        self.__warp_tag_left: str = r'[。！？；!?;]'  # 在双引号之外碰到这些字符，就可以正常换行了
         self.__warp_tag_special: list = ['"', '」']  # 左侧碰到这个字符，需要特殊判断。1:换行符中出现到这个字符之间，出现了偶数，表示可以换行。如果是个奇数，那么就不换行
 
     @staticmethod
-    def first_line_tab(content: str or list) -> str:
+    def first_line_tab(content: str) -> str:
         """
         首行缩进和段落插入空白行
         :param content:
@@ -37,6 +37,7 @@ class LineWrap:
     def check_str_in_display_width(content: str) -> str:
         """
         处理换行，缩进模式，按照首行缩进来判断。
+        这是旧方法
         :param content:
         :return:
         """
@@ -69,6 +70,42 @@ class LineWrap:
             _all_content += "".join(_new_line_str_list)
         return _all_content
 
+    @staticmethod
+    def check_str_in_display_width_func_new(content: str) -> str:
+        """
+        优化版文本处理函数，按首行缩进进行段落格式化
+        1. 使用列表推导替代filter+lambda提高效率
+        2. 避免不必要的列表复制操作
+        3. 简化字符串拼接逻辑
+        4. 使用更清晰的变量名增加可读性
+        """
+        # 处理输入并过滤空行
+        lines = content.split("\n") if isinstance(content, str) else content
+        content_list = [line.replace(" ", "") for line in lines if line]
+
+        if not content_list:
+            return ""
+
+        paragraphs = []  # 存储最终的所有段落
+        current_paragraph = []  # 当前正在构建的段落
+
+        for line in content_list:
+            # 当遇到以全角空格开头的行且当前段落不为空时
+            if line.startswith('\u3000') and current_paragraph:
+                # 完成当前段落并添加到结果集
+                current_paragraph.append('\n')
+                paragraphs.append(''.join(current_paragraph))
+                current_paragraph = []
+
+            current_paragraph.append(line)
+
+        # 处理最后剩余的段落
+        if current_paragraph:
+            current_paragraph.append('\n')
+            paragraphs.append(''.join(current_paragraph))
+
+        return ''.join(paragraphs)
+
     def newline_after_period_outside_quotes(self, text: str):
         """
         排班
@@ -89,10 +126,10 @@ class LineWrap:
     @staticmethod
     def split_into_paragraphs(text: str) -> str:
         """
-        将2个双引号之间的内容拆分一下
+        处理双引号间带空白字符的段落拆分
+        功能：将 」任意空白「 替换为 」\n「
         """
-        paragraphs = text.replace('」「', '」\n「')
-        return paragraphs
+        return re.sub(r'」\s*「', '」\n「', text)
 
     @staticmethod
     def merge_period_outside_quotes(text_list: str):
@@ -148,8 +185,7 @@ class LineWrap:
         result += text[prev_pos:]
         return result
 
-    @staticmethod
-    def add_newline_after_punctuation_outside_quotes(text: str) -> str:
+    def add_newline_after_punctuation_outside_quotes(self, text: str) -> str:
         """
         在指定标点（。！？；）后添加换行符，但跳过引号内的标点
 
@@ -169,7 +205,7 @@ class LineWrap:
         # 2. 处理四种标点符号
         result = []
         prev_pos = 0
-        for punt_match in re.finditer(r'[。！？；;]', text):
+        for punt_match in re.finditer(self.__warp_tag_left, text):
             pos = punt_match.start()
             # 检查是否在引号范围内pip install unidecode
             in_quotes = any(start < pos < end for start, end in quote_blocks)
