@@ -185,4 +185,4 @@ def check_double_quotation_marks(content: str) -> int:
     else:
         if -1 in _first_str_index_list:
             _first_str_index_list.remove(-1)
-        return _first_str_index_list[0]
+        return _first_str_index_list[-1]
