@@ -1,8 +1,8 @@
 import os
 
-from PySide6 import QtWidgets, QtGui
-from PySide6.QtGui import QCursor, QMouseEvent, Qt
-from PySide6.QtWidgets import QVBoxLayout, QListWidget, QSizePolicy
+from PySide6 import QtWidgets, QtGui, QtCore
+from PySide6.QtGui import QMouseEvent, Qt
+from PySide6.QtWidgets import QVBoxLayout, QSizePolicy
 
 from DeskPage.FindList import ListWidgetWithMenu
 
@@ -43,7 +43,7 @@ class SearchAndReplaceWidget(QtWidgets.QWidget):
         lay_out_select_replace_2.setAlignment(Qt.AlignmentFlag.AlignLeft)
         lay_out_select_replace_2.setSpacing(2)
 
-        self.manual_button_history_input.clicked.connect(self.show_select_history)
+        self.manual_button_history_input.clicked.connect(self.show_select_history_in_main_windows)
 
         self._history_list = SearchHistory()
         self._history_list.list_widget.itemClicked.connect(self.input_item_to_search_and_replace)
@@ -51,31 +51,113 @@ class SearchAndReplaceWidget(QtWidgets.QWidget):
         self._history_list_is_show: bool = False
 
         # 主界面布局
-        lay_out_select_replace = QtWidgets.QVBoxLayout(self)
-        lay_out_select_replace.addLayout(lay_out_select_replace_1)
-        lay_out_select_replace.addLayout(lay_out_select_replace_2)
-        lay_out_select_replace.addWidget(self._history_list)
+        self.lay_out_select_replace = QtWidgets.QVBoxLayout(self)
+        self.lay_out_select_replace.addLayout(lay_out_select_replace_1)
+        self.lay_out_select_replace.addLayout(lay_out_select_replace_2)
+        self.lay_out_select_replace.addWidget(self._history_list)
         # lay_out_select_replace.setContentsMargins(5, 5, 5, 5)
-        lay_out_select_replace.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.lay_out_select_replace.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self._history_list.hide()
+
+    # def show_select_history(self):
+    #     """
+    #     显示查询历史
+    #     :return:
+    #     """
+    #
+    #     self._history_list.update_search_history(self._items)
+    #     if not self._history_list_is_show:
+    #         self._history_list.show()
+    #         self._history_list_is_show = True
+    #         self.setMinimumHeight(300)
+    #         self.resize(self.width(), self.height() + self._history_list.height())
+    #     else:
+    #         self._history_list.hide()
+    #         self._history_list_is_show = False
+    #         self.setMinimumHeight(116)
+    #         self.resize(self.width(), 116)
 
     def show_select_history(self):
         """
         显示查询历史
-        :return: 
+        :return:
         """
         self._history_list.update_search_history(self._items)
-        if not self._history_list_is_show:
-            self._history_list.show()
-            self._history_list_is_show = True
-            self.setMinimumHeight(300)
-        else:
-            self._history_list.hide()
-            self._history_list_is_show = False
-            self.setMinimumHeight(100)
-        self.adjustSize()
-        # self.setMinimumSize(self.minimumSizeHint())
+
+        # 切换历史列表的显示状态
+        self._history_list_is_show = not self._history_list_is_show
+        self._history_list.setVisible(self._history_list_is_show)
+
+        # 使用布局管理器的自然行为来调整尺寸
+        self.lay_out_select_replace.invalidate()  # 标记布局为需要重新计算
+        self.layout().activate()  # 激活布局更新
+
+        # 延迟调整大小以确保布局完成更新
+        QtCore.QTimer.singleShot(0, lambda: (
+            self.adjustSize(),
+            self.parentWidget().adjustSize() if self.parentWidget() else None
+        ))
+
+    def show_select_history_in_main_windows(self):
+        """
+        显示查询历史,在侧边栏中
+        :return:
+        """
+        self._history_list.update_search_history(self._items)
+
+        # 切换历史列表的显示状态
+        self._history_list_is_show = not self._history_list_is_show
+        self._history_list.setVisible(self._history_list_is_show)
+
+        # 触发布局更新
+        self.lay_out_select_replace.invalidate()
+        self.layout().activate()
+
+    def is_in_main_window_sidebar(self):
+        """
+        检查当前组件是否在主窗口的侧边栏中，并打印组件树
+        :return: bool
+        """
+        # 打印完整的组件树
+        self.print_widget_tree()
+
+        # 您的实际判断逻辑
+        parent = self.parentWidget()
+        while parent:
+            class_name = parent.__class__.__name__
+            object_name = getattr(parent, 'objectName', lambda: '')()
+            print(f"Checking parent: {class_name}, name: {object_name}")
+
+            # 在这里添加您的具体判断条件
+            # ...
+
+            parent = parent.parentWidget()
+
+        return False
+
+    def print_widget_tree(self):
+        """
+        打印组件树结构
+        """
+        def _print_tree(widget, level=0):
+            indent = "  " * level
+            class_name = widget.__class__.__name__
+            object_name = getattr(widget, 'objectName', lambda: '')()
+            size = f"{widget.width()}x{widget.height()}"
+            print(f"{indent}{class_name} ({object_name}) [{size}]")
+
+            # 遍历子组件
+            if hasattr(widget, 'children'):
+                for child in widget.children():
+                    if isinstance(child, QtWidgets.QWidget):
+                        _print_tree(child, level + 1)
+
+        print("\n=== Widget Tree ===")
+        _print_tree(self)
+        print("==================\n")
+
+
 
     def update_search_history_items(self, items):
         # print(f"_items：{self._items}，item:{items}")
@@ -115,8 +197,6 @@ class SearchHistory(QtWidgets.QDialog):
         layout.addWidget(self.list_widget)
         layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(layout)
-
-        self.adjustSize()
         self.setWindowModality(Qt.WindowModality.WindowModal)  # 使对话框模态，防止用户在子窗口操作时操作主窗口
 
     def update_search_history(self, search_items: list):
