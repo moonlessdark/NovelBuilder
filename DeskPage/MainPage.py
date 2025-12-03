@@ -1,3 +1,5 @@
+import os.path
+
 from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtCore import QPoint
 from PySide6.QtGui import QPalette, QColor, QShortcut, QKeySequence
@@ -9,12 +11,26 @@ from DeskPage.SearchAndReplacePage import SearchAndReplaceWidget
 from Utils.ActionToolBarEnum import ToolBarEnum
 
 
+def get_icon() -> str:
+    """
+    该方法仅限windows使用，如果需要在Macos打包，需要优化一下
+    """
+
+    icon_file = "./Resources/icon.png"
+    if not os.path.exists(icon_file):
+        icon_file = './_internal/Resources/icon.png'
+    return icon_file
+
+
 class QMainElement(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
 
         self.setMinimumSize(800, 600)
         self.setWindowTitle("小说排版工具")
+
+        icon = QtGui.QIcon(get_icon())
+        self.setWindowIcon(icon)
 
         self.tool_bar = self.addToolBar("tool_function")  # 创建一个工具栏，并设置工具栏的标题为"mytool"
         self.tool_bar.setIconSize(QtCore.QSize(20, 20))  # 设置图标大小

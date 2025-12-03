@@ -1,4 +1,4 @@
 chardet
 zhconv
 PySide6
-numpy~=1.26.4
+numpy
